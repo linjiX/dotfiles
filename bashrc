@@ -49,8 +49,6 @@ PS1_TAIL="$RED\n($WHITE\t$RED)\$ $RESET"
 
 PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
 
-# PS1="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)$PURPLE"'$(__git_ps1 "  %s")'"$GRAY"'$(seconds2days ${timer_show})'"$RED\n($WHITE\t$RED)\$ $RESET"
-
 # fzf
 ##################################################################################################
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
@@ -76,8 +74,12 @@ alias nvi='nvim'
 alias t='tmux'
 alias amax='ssh linji@192.168.6.70'
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+alias d='cd ~/.config/dotfiles/'
+alias v='cd ~/.vim/'
+alias h='cd ~'
+alias w='cd ~/workspace/'
 
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # pip
 ##################################################################################################
