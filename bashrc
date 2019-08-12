@@ -78,6 +78,8 @@ alias d='cd ~/.config/dotfiles/'
 alias v='cd ~/.vim/'
 alias h='cd ~'
 alias w='cd ~/workspace/'
+alias o='cd ~/office/'
+alias m='cd /mnt/sdb1/'
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
@@ -105,6 +107,12 @@ if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv virtualenv-init -)"
 fi
 
+# tensorflow
+##################################################################################################
+export TF_XLA_FLAGS=--tf_xla_cpu_global_jit
+
+# git
+##################################################################################################
 source ~/.config/dotfiles/bashrc.git
 
 
