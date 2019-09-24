@@ -78,8 +78,10 @@ alias d='cd ~/.config/dotfiles/'
 alias v='cd ~/.vim/'
 alias h='cd ~'
 alias w='cd ~/workspace/'
+alias p='cd ~/phabricator/'
 alias o='cd ~/office/'
 alias m='cd /mnt/sdb1/'
+alias n='cd /mnt/nfs/'
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
@@ -115,6 +117,9 @@ export TF_XLA_FLAGS=--tf_xla_cpu_global_jit
 ##################################################################################################
 source ~/.config/dotfiles/bashrc.git
 
+# neofetch
+##################################################################################################
+# neofetch 2>/dev/null
 
 # if [[ ! $TERM =~ screen  && ! $VIM ]]; then
 #     exec tmux
