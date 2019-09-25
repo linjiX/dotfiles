@@ -42,10 +42,15 @@ seconds2days() { # convert integer seconds to Ddays,HH:MM:SS
 trap 'timer_start' DEBUG
 PROMPT_COMMAND=timer_stop
 
-PS1_HEAD="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)"
+if [ $(uname) == Darwin ]; then
+    PS1_HEAD="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)"
+    PS1_TAIL="$RED\n($WHITE\t$RED)\$ $RESET"
+else
+    PS1_HEAD="\n$PURPLE($WHITE\u@\h$PURPLE)-($WHITE\w$PURPLE)"
+    PS1_TAIL="$PURPLE\n($WHITE\t$PURPLE)\$ $RESET"
+fi
 PS1_GIT="$PURPLE"'$(__git_ps1 "  %s")'
 PS1_TIMER="$GRAY"'$(seconds2days ${timer_show})'
-PS1_TAIL="$RED\n($WHITE\t$RED)\$ $RESET"
 
 PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
 # fzf
@@ -59,7 +64,7 @@ export FZF_CTRL_T_COMMAND="($FZF_GIT_COMMAND || $FZF_RG_COMMAND || $FZF_AG_COMMA
 
 # setxkbmap
 ##################################################################################################
-if [ $(uname) != Darwin ]; then
+if command -v setxkbmap >/dev/null 2>&1; then
     setxkbmap -option ""
     # setxkbmap -option "ctrl:nocaps"
     setxkbmap -option "caps:escape"
@@ -89,8 +94,9 @@ alias d='cd ~/.config/dotfiles/'
 alias v='cd ~/.vim/'
 alias h='cd ~'
 alias w='cd ~/workspace/'
-alias p='cd ~/phabricator/'
-alias o='cd ~/office/'
+alias p='cd ~/workspace/phabricator/'
+alias o='cd ~/workspace/office/'
+alias e='cd ~/workspace/engineer/'
 alias m='cd /mnt/sdb1/'
 alias n='cd /mnt/nfs/'
 
