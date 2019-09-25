@@ -42,16 +42,30 @@ seconds2days() { # convert integer seconds to Ddays,HH:MM:SS
 trap 'timer_start' DEBUG
 PROMPT_COMMAND=timer_stop
 
+function git_branch {
+   branch="`git branch 2>/dev/null | grep "^\*" | sed -e "s/^\*\ //"`"
+   if [ "${branch}" != "" ];then
+       if [ "${branch}" = "(no branch)" ];then
+           branch="(`git rev-parse --short HEAD`...)"
+       fi
+       echo "  $branch"
+   fi
+}
+
 PS1_HEAD="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)"
-PS1_GIT="$PURPLE"'$(__git_ps1 "  %s")'
 PS1_TIMER="$GRAY"'$(seconds2days ${timer_show})'
 PS1_TAIL="$RED\n($WHITE\t$RED)\$ $RESET"
 
-PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
+if [ $(uname) == Darwin ]; then
+    PS1_GIT="$PURPLE"'$(git_branch)'
+else
+    PS1_GIT="$PURPLE"'$(__git_ps1 "  %s")'
+fi
 
+PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
 # fzf
 ##################################################################################################
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -r ~/.fzf.bash ] && source ~/.fzf.bash
 FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
 FZF_AG_COMMAND='ag -l --nocolor --hidden --ignore-dir=".git" --ignore="*\.swp" -g ""'
 FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
@@ -60,15 +74,26 @@ export FZF_CTRL_T_COMMAND="($FZF_GIT_COMMAND || $FZF_RG_COMMAND || $FZF_AG_COMMA
 
 # setxkbmap
 ##################################################################################################
-setxkbmap -option ""
-# setxkbmap -option "ctrl:nocaps"
-setxkbmap -option "caps:escape"
-setxkbmap -option "shift:both_capslock"
+if [ $(uname) != Darwin ]; then
+    setxkbmap -option ""
+    # setxkbmap -option "ctrl:nocaps"
+    setxkbmap -option "caps:escape"
+    setxkbmap -option "shift:both_capslock"
+fi
 
 # alias
 ##################################################################################################
 # alias nfs='cd /mnt/nfs/hdmap'
 # alias nfsmount='sudo mount -t nfs 172.2.0.231:/mnt/data/wayz-nfs /mnt/nfs'
+
+if [ $(uname) == Darwin ]; then
+    alias ll='ls -alF'
+    alias la='ls -A'
+    alias l='ls -CF'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
 
 alias nvi='nvim'
 alias t='tmux'
