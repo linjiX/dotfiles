@@ -98,10 +98,6 @@ alias m='cd /mnt/sdb1/'
 alias n='cd /mnt/nfs/'
 
 
-DOCKER_PRE='docker run -it --rm -h Ubuntu -v ~/workspace:/home/linji/workspace '
-DOCKER_POST='linjixue/ubuntu:16.04'
-alias ubuntu=$DOCKER_PRE$DOCKER_POST
-
 # pip
 ##################################################################################################
 # pip bash completion start
@@ -142,11 +138,27 @@ fi
 ##################################################################################################
 if [ $(uname) == Darwin ]; then
     export PATH="$PATH:~/.arc/arcanist/bin/"
-    [ -r ~/.arc/arcanist/resources/shell/bash-completion ] && \
-        source ~/.arc/arcanist/resources/shell/bash-completion
+    ARC_COMPLETION="~/.arc/arcanist/resources/shell/bash-completion"
+    [ -r $ARC_COMPLETION ] && source $ARC_COMPLETION
 fi
 
- #git
+# docker
+##################################################################################################
+DOCKER_PRE='docker run -it --rm -h Ubuntu -v ~/workspace:/home/linji/workspace '
+DOCKER_POST='linjixue/ubuntu:16.04'
+alias ubuntu=$DOCKER_PRE$DOCKER_POST
+
+if [ $(uname) == Darwin ]; then
+    DOCKER_ETC="/Applications/Docker.app/Contents/Resources/etc"
+    DOCKER_COMPLETION=$DOCKER_ETC"/docker.bash-completion"
+    DOCKER_MACHINE_COMPLETION=$DOCKER_ETC"/docker-machine.bash-completion"
+    DOCKER_COMPOSE_COMPLETION=$DOCKER_ETC"/docker-compose.bash-completion"
+    [ -r $DOCKER_COMPLETION ] && source $DOCKER_COMPLETION
+    [ -r $DOCKER_MACHINE_COMPLETION ] && source $DOCKER_MACHINE_COMPLETION
+    [ -r $DOCKER_COMPOSE_COMPLETION ] && source $DOCKER_COMPOSE_COMPLETION
+fi
+
+# git
 ##################################################################################################
 source ~/.config/dotfiles/bashrc.git
 
