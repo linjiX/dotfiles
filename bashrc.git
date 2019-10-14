@@ -86,14 +86,14 @@ alias gsd='git svn dcommit'
 # Usage example: git pull origin $(current_branch)
 #
 current_branch() {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || \
-        ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+    ref=$(git symbolic-ref HEAD 2>/dev/null) ||
+        ref=$(git rev-parse --short HEAD 2>/dev/null) || return
     echo "${ref#refs/heads/}"
 }
 
 current_repository() {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || \
-        ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+    ref=$(git symbolic-ref HEAD 2>/dev/null) ||
+        ref=$(git rev-parse --short HEAD 2>/dev/null) || return
     git remote -v | cut -d':' -f 2
 }
 
@@ -104,7 +104,7 @@ alias ggpush='git push origin $(current_branch)'
 alias ggpnp='git pull origin $(current_branch) && git push origin $(current_branch)'
 
 # Pretty log messages
-_git_log_prettily(){
+_git_log_prettily() {
     if [ -n "$1" ]; then
         git log --pretty="$1"
     fi
