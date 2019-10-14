@@ -55,7 +55,7 @@ PS1_TIMER="$GRAY"'$(seconds2days ${timer_show})'
 PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
 # fzf
 ##################################################################################################
-[ -r ~/.fzf.bash ] && source ~/.fzf.bash
+# [ -r ~/.fzf.bash ] && source ~/.fzf.bash
 FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
 FZF_AG_COMMAND='ag -l --nocolor --hidden --ignore-dir=".git" --ignore="*\.swp" -g ""'
 FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
@@ -73,9 +73,6 @@ fi
 
 # alias
 ##################################################################################################
-# alias nfs='cd /mnt/nfs/hdmap'
-# alias nfsmount='sudo mount -t nfs 172.2.0.231:/mnt/data/wayz-nfs /mnt/nfs'
-
 if [ $(uname) == Darwin ]; then
     alias ls='ls -G'
     alias ll='ls -alFG'
@@ -100,7 +97,10 @@ alias e='cd ~/workspace/engineer/'
 alias m='cd /mnt/sdb1/'
 alias n='cd /mnt/nfs/'
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+DOCKER_PRE='docker run -it --rm -h Ubuntu -v ~/workspace:/home/linji/workspace '
+DOCKER_POST='linjixue/ubuntu:16.04'
+alias ubuntu=$DOCKER_PRE$DOCKER_POST
 
 # pip
 ##################################################################################################
@@ -138,7 +138,15 @@ if [ $(uname) == Darwin ]; then
     function _expand() { :;}
 fi
 
-# git
+# arcanist
+##################################################################################################
+if [ $(uname) == Darwin ]; then
+    export PATH="$PATH:~/.arc/arcanist/bin/"
+    [ -r ~/.arc/arcanist/resources/shell/bash-completion ] && \
+        source ~/.arc/arcanist/resources/shell/bash-completion
+fi
+
+ #git
 ##################################################################################################
 source ~/.config/dotfiles/bashrc.git
 
