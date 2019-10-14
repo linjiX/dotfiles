@@ -85,16 +85,16 @@ alias gsd='git svn dcommit'
 # Will return the current branch name
 # Usage example: git pull origin $(current_branch)
 #
-function current_branch() {
-  ref=$(git symbolic-ref HEAD 2> /dev/null) || \
-  ref=$(git rev-parse --short HEAD 2> /dev/null) || return
-  echo ${ref#refs/heads/}
+current_branch() {
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || \
+        ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+    echo "${ref#refs/heads/}"
 }
 
-function current_repository() {
-  ref=$(git symbolic-ref HEAD 2> /dev/null) || \
-  ref=$(git rev-parse --short HEAD 2> /dev/null) || return
-  echo $(git remote -v | cut -d':' -f 2)
+current_repository() {
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || \
+        ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+    git remote -v | cut -d':' -f 2
 }
 
 # these aliases take advantage of the previous function
@@ -104,10 +104,10 @@ alias ggpush='git push origin $(current_branch)'
 alias ggpnp='git pull origin $(current_branch) && git push origin $(current_branch)'
 
 # Pretty log messages
-function _git_log_prettily(){
-  if ! [ -z $1 ]; then
-    git log --pretty=$1
-  fi
+_git_log_prettily(){
+    if [ -n "$1" ]; then
+        git log --pretty="$1"
+    fi
 }
 alias glp="_git_log_prettily"
 
