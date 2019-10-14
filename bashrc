@@ -11,54 +11,55 @@
 
 # PS1
 ##################################################################################################
-WHITE='\[\e[01;36m\]'
-RED='\[\e[01;31m\]'
-PURPLE='\[\e[01;35m\]'
-GRAY='\[\e[01;33m\]'
-RESET='\[\e[00m\]'
+readonly WHITE='\[\e[01;36m\]'
+readonly RED='\[\e[01;31m\]'
+readonly PURPLE='\[\e[01;35m\]'
+readonly GRAY='\[\e[01;33m\]'
+readonly RESET='\[\e[00m\]'
 
-function timer_start {
+function timer_start() {
     timer=${timer:-$SECONDS}
 }
 
-function timer_stop {
-    timer_show=$(($SECONDS - $timer))
+function timer_stop() {
+    # shellcheck disable=SC2034
+    timer_show=$((SECONDS - timer))
     unset timer
 }
 
 seconds2days() { # convert integer seconds to Ddays,HH:MM:SS
-    if [ $1 -lt 3 ]; then
+    if [ "$1" -lt 3 ]; then
         return
     fi
-    local s=$(($1%60))
-    local m=$(($1/60%60))
-    local h=$(($1/60/60%24))
-    local d=$(($1/60/60/24))
-    printf " took ";
-    printf "%ddays,%02dh%02dm%02ds" $d $h $m $s | \
-        sed 's/^1days/1day/;s/^0days,\(00[h|m|s]\)*//;s/^0//';
+    local s=$(($1 % 60))
+    local m=$(($1 / 60 % 60))
+    local h=$(($1 / 60 / 60 % 24))
+    local d=$(($1 / 60 / 60 / 24))
+    printf " took "
+    printf "%ddays,%02dh%02dm%02ds" $d $h $m $s |
+        sed 's/^1days/1day/;s/^0days,\(00[h|m|s]\)*//;s/^0//'
 }
 
 trap 'timer_start' DEBUG
 PROMPT_COMMAND=timer_stop
 
-if [ $(uname) == Darwin ]; then
-    PS1_HEAD="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)"
-    PS1_TAIL="$RED\n($WHITE\t$RED)\$ $RESET"
+if [ "$(uname)" == Darwin ]; then
+    readonly PS1_HEAD="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)"
+    readonly PS1_TAIL="$RED\n($WHITE\t$RED)\$ $RESET"
 else
-    PS1_HEAD="\n$PURPLE($WHITE\u@\h$PURPLE)-($WHITE\w$PURPLE)"
-    PS1_TAIL="$PURPLE\n($WHITE\t$PURPLE)\$ $RESET"
+    readonly PS1_HEAD="\n$PURPLE($WHITE\u@\h$PURPLE)-($WHITE\w$PURPLE)"
+    readonly PS1_TAIL="$PURPLE\n($WHITE\t$PURPLE)\$ $RESET"
 fi
-PS1_GIT="$PURPLE"'$(__git_ps1 "  %s")'
-PS1_TIMER="$GRAY"'$(seconds2days ${timer_show})'
+readonly PS1_GIT="$PURPLE""\$(__git_ps1 \"  %s\")"
+readonly PS1_TIMER="$GRAY""\$(seconds2days \${timer_show})"
 
-PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
+readonly PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
 # fzf
 ##################################################################################################
 # [ -r ~/.fzf.bash ] && source ~/.fzf.bash
-FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
-FZF_AG_COMMAND='ag -l --nocolor --hidden --ignore-dir=".git" --ignore="*\.swp" -g ""'
-FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
+readonly FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
+readonly FZF_AG_COMMAND='ag -l --nocolor --hidden --ignore-dir=".git" --ignore="*\.swp" -g ""'
+readonly FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
 
 export FZF_CTRL_T_COMMAND="($FZF_GIT_COMMAND || $FZF_RG_COMMAND || $FZF_AG_COMMAND) 2> /dev/null"
 
@@ -73,7 +74,7 @@ fi
 
 # alias
 ##################################################################################################
-if [ $(uname) == Darwin ]; then
+if [ "$(uname)" == Darwin ]; then
     alias ls='ls -G'
     alias ll='ls -alFG'
     alias la='ls -AG'
@@ -102,9 +103,9 @@ alias n='cd /mnt/nfs/'
 ##################################################################################################
 # pip bash completion start
 _pip_completion() {
-    COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
-                   COMP_CWORD=$COMP_CWORD \
-                   PIP_AUTO_COMPLETE=1 $1 ) )
+    COMPREPLY=("$(COMP_WORDS="${COMP_WORDS[*]}" \
+        COMP_CWORD=$COMP_CWORD \
+        PIP_AUTO_COMPLETE=1 $1)")
 }
 complete -o default -F _pip_completion pip
 complete -o default -F _pip_completion pip3
@@ -128,38 +129,40 @@ export TF_XLA_FLAGS=--tf_xla_cpu_global_jit
 
 # bash_completion
 ##################################################################################################
-if [ $(uname) == Darwin ]; then
-    [ -r /usr/local/etc/profile.d/bash_completion.sh ] && \
+if [ "$(uname)" == Darwin ]; then
+    [ -r /usr/local/etc/profile.d/bash_completion.sh ] &&
         source /usr/local/etc/profile.d/bash_completion.sh
-    function _expand() { :;}
+    _expand() { :; }
 fi
 
 # arcanist
 ##################################################################################################
-if [ $(uname) == Darwin ]; then
+if [ "$(uname)" == Darwin ]; then
     export PATH="$PATH:~/.arc/arcanist/bin/"
-    ARC_COMPLETION="~/.arc/arcanist/resources/shell/bash-completion"
-    [ -r $ARC_COMPLETION ] && source $ARC_COMPLETION
+    # shellcheck source=/dev/null
+    [ -r ~/.arc/arcanist/resources/shell/bash-completion ] &&
+        source ~/.arc/arcanist/resources/shell/bash-completion
 fi
 
 # docker
 ##################################################################################################
-DOCKER_PRE='docker run -it --rm -h Ubuntu -v ~/workspace:/home/linji/workspace '
-DOCKER_POST='linjixue/ubuntu:16.04'
-alias ubuntu=$DOCKER_PRE$DOCKER_POST
+readonly DOCKER_PRE='docker run -it --rm -h Ubuntu -v ~/workspace:/home/linji/workspace '
+readonly DOCKER_POST='linjixue/ubuntu:16.04'
+# shellcheck disable=SC2139
+alias ubuntu="$DOCKER_PRE$DOCKER_POST"
 
-if [ $(uname) == Darwin ]; then
-    DOCKER_ETC="/Applications/Docker.app/Contents/Resources/etc"
-    DOCKER_COMPLETION=$DOCKER_ETC"/docker.bash-completion"
-    DOCKER_MACHINE_COMPLETION=$DOCKER_ETC"/docker-machine.bash-completion"
-    DOCKER_COMPOSE_COMPLETION=$DOCKER_ETC"/docker-compose.bash-completion"
-    [ -r $DOCKER_COMPLETION ] && source $DOCKER_COMPLETION
-    [ -r $DOCKER_MACHINE_COMPLETION ] && source $DOCKER_MACHINE_COMPLETION
-    [ -r $DOCKER_COMPOSE_COMPLETION ] && source $DOCKER_COMPOSE_COMPLETION
+if [ "$(uname)" == Darwin ]; then
+    [ -r /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion ] &&
+        source /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion
+    [ -r /Applications/Docker.app/Contents/Resources/etc/docker-machine.bash-completion ] &&
+        source /Applications/Docker.app/Contents/Resources/etc/docker-machine.bash-completion
+    [ -r /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion ] &&
+        source /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion
 fi
 
 # git
 ##################################################################################################
+# shellcheck source=/dev/null
 source ~/.config/dotfiles/bashrc.git
 
 # neofetch
