@@ -144,6 +144,12 @@ if [ "$(uname)" == Darwin ]; then
         source ~/.arc/arcanist/resources/shell/bash-completion
 fi
 
+# ossutil
+##################################################################################################
+if [ "$(uname)" == Darwin ]; then
+    export PATH="$PATH:~/.local/bin/"
+fi
+
 # docker
 ##################################################################################################
 readonly DOCKER_PRE='docker run -it --rm -h Ubuntu -v ~/workspace:/home/linji/workspace '
