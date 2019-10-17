@@ -14,5 +14,5 @@ pushd ubuntu >/dev/null
 ./vim.sh
 ./pyenv.sh
 ./applications.sh
-snap install shfmt
+sudo snap install shfmt
 ./dircolors.sh

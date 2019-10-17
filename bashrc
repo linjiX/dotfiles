@@ -65,7 +65,7 @@ export FZF_CTRL_T_COMMAND="($FZF_GIT_COMMAND || $FZF_RG_COMMAND || $FZF_AG_COMMA
 
 # setxkbmap
 ##################################################################################################
-if command -v setxkbmap >/dev/null 2>&1; then
+if command -v setxkbmap >/dev/null 2>&1 && [[ -z $SSH_CLIENT ]]; then
     setxkbmap -option ""
     # setxkbmap -option "ctrl:nocaps"
     setxkbmap -option "caps:escape"
