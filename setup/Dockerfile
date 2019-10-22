@@ -30,9 +30,9 @@ COPY ./ubuntu/vim.sh ./
 RUN ./vim.sh && \
     rm ~/.wget-hsts && \
     rm ~/.viminfo && \
-    rm -rf /tmp/* && \
     rm -rf ~/.vim/setup/ctags && \
     rm -rf ~/.vim/setup/global-* && \
+    sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
 COPY ./ubuntu/pyenv.sh ./
@@ -55,9 +55,6 @@ COPY ./ubuntu/shfmt.sh ./
 # hadolint ignore=DL3004
 RUN ./shfmt.sh && \
     sudo rm -rf /var/lib/apt/lists/*
-
-COPY ./ubuntu/dircolors.sh ./
-RUN ./dircolors.sh
 
 # hadolint ignore=DL3004
 RUN sudo sed -i 's/NOPASSWD: //g' /etc/sudoers

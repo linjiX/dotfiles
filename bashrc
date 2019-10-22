@@ -75,6 +75,7 @@ fi
 # alias
 ##################################################################################################
 if [ "$(uname)" == Darwin ]; then
+    alias tree='tree -C'
     alias ls='ls -G'
     alias ll='ls -alFG'
     alias la='ls -AG'

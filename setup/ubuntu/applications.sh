@@ -16,10 +16,8 @@ sudo apt-get -y upgrade
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-fi
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # NeoVim
 pip3 install neovim
@@ -29,7 +27,7 @@ pip3 install gitlint
 
 # bash
 sudo npm install --global bash-language-server
-sudo apt-get install -y shellcheck
+# sudo apt-get install -y shellcheck
 
 # Python
 pip3 install yapf isort ipython pylint flake8
@@ -63,3 +61,6 @@ pip3 install vim-vint
 # tldr
 sudo npm install --global tldr
 
+# dircolors
+curl https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark \
+    -o ~/.dircolors
