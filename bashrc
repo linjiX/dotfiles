@@ -153,8 +153,8 @@ fi
 
 # docker
 ##################################################################################################
-readonly DOCKER_PRE='docker run -it --rm -h Ubuntu -v ~/workspace:/home/linji/workspace '
-readonly DOCKER_POST='linjixue/ubuntu:16.04'
+readonly DOCKER_PRE='docker run -it --rm -h Ubuntu --detach-keys="ctrl-s" '
+readonly DOCKER_POST='-v ~/workspace:/home/linji/workspace linjixue/ubuntu:16.04'
 # shellcheck disable=SC2139
 alias ubuntu="$DOCKER_PRE$DOCKER_POST"
 

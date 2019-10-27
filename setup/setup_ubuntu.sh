@@ -9,11 +9,11 @@ echo 'source ~/.config/dotfiles/tmux.conf' >> ~/.tmux.conf
 
 pushd ubuntu >/dev/null
 
-./basic.sh
-./tmux.sh
-./vim.sh
-./pyenv.sh
-./applications.sh
+./ubuntu/basic.sh
+./ubuntu/tmux.sh
+./ubuntu/pyenv.sh
+./ubuntu/vim.sh
+./ubuntu/applications.sh
 sudo snap install \
     shfmt \
     shellcheck

@@ -34,12 +34,12 @@ pip3 install yapf isort ipython pylint flake8
 
 # C/C++
 ~/.vim/setup/install_clang_format.sh
-# ~/.vim/setup/install_cppcheck.sh
-# ~/.vim/setup/install_ccls.sh
+~/.vim/setup/install_cppcheck.sh
+~/.vim/setup/install_ccls.sh
 
 # Bazel
 ~/.vim/setup/install_bazel.sh
-# ~/.vim/setup/install_buildifier.sh
+~/.vim/setup/install_buildifier.sh
 
 # Json
 pip3 install demjson

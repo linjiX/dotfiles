@@ -2,6 +2,9 @@ FROM ubuntu:16.04
 
 WORKDIR /setup
 
+ENV TERM=xterm-256color \
+    LANG=en_US.UTF-8 \
+    DOCKER=true
 COPY ./ubuntu/sources.list /etc/apt/sources.list.ustc
 COPY ./ubuntu/sudo.sh ./
 RUN ./sudo.sh ./ && \
@@ -17,12 +20,16 @@ COPY ./ubuntu/basic.sh ./
 RUN ./basic.sh && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/dotfiles.sh ./
-RUN ./dotfiles.sh
-
 COPY ./ubuntu/tmux.sh ./
 # hadolint ignore=DL3004
 RUN ./tmux.sh && \
+    sudo rm -rf /var/lib/apt/lists/*
+
+COPY ./ubuntu/pyenv.sh ./
+# hadolint ignore=DL3004
+RUN ./pyenv.sh && \
+    rm -rf ~/.cache && \
+    rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
 COPY ./ubuntu/vim.sh ./
@@ -35,12 +42,8 @@ RUN ./vim.sh && \
     sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/pyenv.sh ./
-# hadolint ignore=DL3004
-RUN ./pyenv.sh && \
-    rm -rf ~/.cache && \
-    rm -rf /tmp/* && \
-    sudo rm -rf /var/lib/apt/lists/*
+COPY ./ubuntu/dotfiles.sh ./
+RUN ./dotfiles.sh
 
 COPY ./ubuntu/applications.sh ./
 # hadolint ignore=DL3004
@@ -58,6 +61,4 @@ RUN ./shfmt.sh && \
 
 # hadolint ignore=DL3004
 RUN sudo sed -i 's/NOPASSWD: //g' /etc/sudoers
-ENV TERM=xterm-256color \
-    LANG=en_US.UTF-8
 WORKDIR /home/$NAME
