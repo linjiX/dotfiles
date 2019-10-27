@@ -26,7 +26,6 @@ pip3 install neovim
 pip3 install gitlint
 
 # bash
-sudo npm install --global bash-language-server
 # sudo apt-get install -y shellcheck
 
 # Python
@@ -52,7 +51,6 @@ sudo npm install --global prettier
 pip3 install cmake_format cmakelint
 
 # Dockerfile
-sudo npm install --global dockerfile-language-server-nodejs
 ~/.vim/setup/install_hadolint.sh
 
 # VimScript

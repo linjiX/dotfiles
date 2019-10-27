@@ -145,9 +145,10 @@ if [ "$(uname)" == Darwin ]; then
         source ~/.arc/arcanist/resources/shell/bash-completion
 fi
 
-# ossutil
+# MacOS
 ##################################################################################################
 if [ "$(uname)" == Darwin ]; then
+    export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
     export PATH="$PATH:~/.local/bin/"
 fi
 
