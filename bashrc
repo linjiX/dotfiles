@@ -11,11 +11,11 @@
 
 # PS1
 ##################################################################################################
-readonly WHITE='\[\e[01;36m\]'
-readonly RED='\[\e[01;31m\]'
-readonly PURPLE='\[\e[01;35m\]'
-readonly GRAY='\[\e[01;33m\]'
-readonly RESET='\[\e[00m\]'
+WHITE='\[\e[01;36m\]'
+RED='\[\e[01;31m\]'
+PURPLE='\[\e[01;35m\]'
+GRAY='\[\e[01;33m\]'
+RESET='\[\e[00m\]'
 
 function timer_start() {
     timer=${timer:-$SECONDS}
@@ -44,22 +44,22 @@ trap 'timer_start' DEBUG
 PROMPT_COMMAND=timer_stop
 
 if [ "$(uname)" == Darwin ]; then
-    readonly PS1_HEAD="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)"
-    readonly PS1_TAIL="$RED\n($WHITE\t$RED)\$ $RESET"
+    PS1_HEAD="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)"
+    PS1_TAIL="$RED\n($WHITE\t$RED)\$ $RESET"
 else
-    readonly PS1_HEAD="\n$PURPLE($WHITE\u@\h$PURPLE)-($WHITE\w$PURPLE)"
-    readonly PS1_TAIL="$PURPLE\n($WHITE\t$PURPLE)\$ $RESET"
+    PS1_HEAD="\n$PURPLE($WHITE\u@\h$PURPLE)-($WHITE\w$PURPLE)"
+    PS1_TAIL="$PURPLE\n($WHITE\t$PURPLE)\$ $RESET"
 fi
-readonly PS1_GIT="$PURPLE""\$(__git_ps1 \"  %s\")"
-readonly PS1_TIMER="$GRAY""\$(seconds2days \${timer_show})"
+PS1_GIT="$PURPLE""\$(__git_ps1 \"  %s\")"
+PS1_TIMER="$GRAY""\$(seconds2days \${timer_show})"
 
-readonly PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
+PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
 # fzf
 ##################################################################################################
 # [ -r ~/.fzf.bash ] && source ~/.fzf.bash
-readonly FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
-readonly FZF_AG_COMMAND='ag -l --nocolor --hidden --ignore-dir=".git" --ignore="*\.swp" -g ""'
-readonly FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
+FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
+FZF_AG_COMMAND='ag -l --nocolor --hidden --ignore-dir=".git" --ignore="*\.swp" -g ""'
+FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
 
 export FZF_CTRL_T_COMMAND="($FZF_GIT_COMMAND || $FZF_RG_COMMAND || $FZF_AG_COMMAND) 2> /dev/null"
 
@@ -154,8 +154,8 @@ fi
 
 # docker
 ##################################################################################################
-readonly DOCKER_PRE='docker run -it --rm -h Ubuntu --detach-keys="ctrl-s" '
-readonly DOCKER_POST='-v ~/workspace:/home/linji/workspace linjixue/ubuntu:16.04'
+DOCKER_PRE='docker run -it --rm -h Ubuntu --detach-keys="ctrl-s" '
+DOCKER_POST='-v ~/workspace:/home/linji/workspace linjixue/ubuntu:16.04'
 # shellcheck disable=SC2139
 alias ubuntu="$DOCKER_PRE$DOCKER_POST"
 
