@@ -3,16 +3,6 @@
 set -e
 set -v
 
-sudo add-apt-repository -y ppa:dawidd0811/neofetch
-sudo apt-get update
-sudo apt-get install -y \
-    tree \
-    htop \
-    arcanist \
-    ranger \
-    neofetch
-sudo apt-get -y upgrade
-
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
@@ -27,6 +17,7 @@ pip3 install gitlint
 
 # bash
 # sudo apt-get install -y shellcheck
+~/.vim/setup/install_shfmt.sh
 
 # Python
 pip3 install yapf isort ipython pylint flake8

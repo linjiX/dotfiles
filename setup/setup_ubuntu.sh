@@ -10,6 +10,7 @@ echo 'source ~/.config/dotfiles/tmux.conf' >> ~/.tmux.conf
 pushd ubuntu >/dev/null
 
 ./ubuntu/basic.sh
+./ubuntu/advanced.sh
 ./ubuntu/tmux.sh
 ./ubuntu/pyenv.sh
 ./ubuntu/vim.sh

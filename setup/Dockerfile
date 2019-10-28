@@ -20,6 +20,11 @@ COPY ./ubuntu/basic.sh ./
 RUN ./basic.sh && \
     sudo rm -rf /var/lib/apt/lists/*
 
+COPY ./ubuntu/advanced.sh ./
+# hadolint ignore=DL3004
+RUN ./advanced.sh && \
+    sudo rm -rf /var/lib/apt/lists/*
+
 COPY ./ubuntu/tmux.sh ./
 # hadolint ignore=DL3004
 RUN ./tmux.sh && \
@@ -50,13 +55,14 @@ COPY ./ubuntu/applications.sh ./
 RUN ./applications.sh && \
     rm -rf ~/.vim/setup/ccls && \
     rm -rf ~/.vim/setup/cppcheck-* && \
-    rm -rf ~/.vim/setup/buildtools-* && \
     rm -rf ~/.npm && \
+    rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/shfmt.sh ./
 # hadolint ignore=DL3004
-RUN ./shfmt.sh && \
+RUN sudo apt-get update && \
+    sudo apt-get -y upgrade && \
+    sudo apt-get -y autoremove --purge && \
     sudo rm -rf /var/lib/apt/lists/*
 
 # hadolint ignore=DL3004
