@@ -1,10 +1,8 @@
 FROM ubuntu:16.04
 
 WORKDIR /setup
+ENV DOCKER=true
 
-ENV TERM=xterm-256color \
-    LANG=en_US.UTF-8 \
-    DOCKER=true
 COPY ./ubuntu/sources.list /etc/apt/sources.list.ustc
 COPY ./ubuntu/sudo.sh ./
 RUN ./sudo.sh ./ && \
@@ -34,7 +32,7 @@ COPY ./ubuntu/pyenv.sh ./
 # hadolint ignore=DL3004
 RUN ./pyenv.sh && \
     rm -rf ~/.cache && \
-    rm -rf /tmp/* && \
+    sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
 COPY ./ubuntu/vim.sh ./
@@ -42,8 +40,6 @@ COPY ./ubuntu/vim.sh ./
 RUN ./vim.sh && \
     rm ~/.wget-hsts && \
     rm ~/.viminfo && \
-    rm -rf ~/.vim/setup/ctags && \
-    rm -rf ~/.vim/setup/global-* && \
     sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
@@ -53,10 +49,9 @@ RUN ./dotfiles.sh
 COPY ./ubuntu/applications.sh ./
 # hadolint ignore=DL3004
 RUN ./applications.sh && \
-    rm -rf ~/.vim/setup/ccls && \
-    rm -rf ~/.vim/setup/cppcheck-* && \
+    rm ~/.wget-hsts && \
     rm -rf ~/.npm && \
-    rm -rf /tmp/* && \
+    sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
 # hadolint ignore=DL3004
@@ -65,6 +60,9 @@ RUN . ~/.profile  && \
     sudo apt-get -y upgrade && \
     sudo apt-get -y autoremove --purge && \
     sudo rm -rf /var/lib/apt/lists/*
+
+ENV TERM=xterm-256color \
+    LANG=en_US.UTF-8
 
 # hadolint ignore=DL3004
 RUN sudo sed -i 's/NOPASSWD: //g' /etc/sudoers

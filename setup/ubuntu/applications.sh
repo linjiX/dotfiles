@@ -24,8 +24,8 @@ pip3 install yapf isort ipython pylint flake8
 
 # C/C++
 ~/.vim/setup/install_clang_format.sh
-~/.vim/setup/install_cppcheck.sh
 ~/.vim/setup/install_ccls.sh
+~/.vim/setup/install_cppcheck.sh
 
 # Bazel
 ~/.vim/setup/install_bazel.sh
