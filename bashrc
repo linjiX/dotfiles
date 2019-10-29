@@ -9,6 +9,37 @@
 #                                                                           #
 #############################################################################
 
+# shellcheck source=/dev/null
+true
+
+# Reset $PATH
+##################################################################################################
+if [ "$(uname)" == Darwin ]; then
+    if [ -x /usr/libexec/path_helper ]; then
+        export PATH=""
+        eval "$(/usr/libexec/path_helper -s)"
+    fi
+else
+    source /etc/environment
+fi
+
+# MacOS
+##################################################################################################
+if [ "$(uname)" == Darwin ]; then
+    export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+    export PATH="$HOME/.local/bin/:$PATH"
+
+    # arcanist
+    export PATH="$HOME/.arc/arcanist/bin/:$PATH"
+    [ -r ~/.arc/arcanist/resources/shell/bash-completion ] &&
+        source ~/.arc/arcanist/resources/shell/bash-completion
+
+    # bash_completion
+    [ -r /usr/local/etc/profile.d/bash_completion.sh ] &&
+        source /usr/local/etc/profile.d/bash_completion.sh
+    _expand() { :; }
+fi
+
 # PS1
 ##################################################################################################
 WHITE='\[\e[01;36m\]'
@@ -54,6 +85,7 @@ PS1_GIT="$PURPLE""\$(__git_ps1 \"  %s\")"
 PS1_TIMER="$GRAY""\$(seconds2days \${timer_show})"
 
 PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
+
 # fzf
 ##################################################################################################
 # [ -r ~/.fzf.bash ] && source ~/.fzf.bash
@@ -124,34 +156,6 @@ if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv virtualenv-init -)"
 fi
 
-# tensorflow
-##################################################################################################
-export TF_XLA_FLAGS=--tf_xla_cpu_global_jit
-
-# bash_completion
-##################################################################################################
-if [ "$(uname)" == Darwin ]; then
-    [ -r /usr/local/etc/profile.d/bash_completion.sh ] &&
-        source /usr/local/etc/profile.d/bash_completion.sh
-    _expand() { :; }
-fi
-
-# arcanist
-##################################################################################################
-if [ "$(uname)" == Darwin ]; then
-    export PATH="$PATH:~/.arc/arcanist/bin/"
-    # shellcheck source=/dev/null
-    [ -r ~/.arc/arcanist/resources/shell/bash-completion ] &&
-        source ~/.arc/arcanist/resources/shell/bash-completion
-fi
-
-# MacOS
-##################################################################################################
-if [ "$(uname)" == Darwin ]; then
-    export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
-    export PATH="$PATH:~/.local/bin/"
-fi
-
 # docker
 ##################################################################################################
 DOCKER_PRE='docker run -it --rm -h Ubuntu --detach-keys="ctrl-s" '
@@ -168,9 +172,12 @@ if [ "$(uname)" == Darwin ]; then
         source /Applications/Docker.app/Contents/Resources/etc/docker-compose.bash-completion
 fi
 
+# tensorflow
+##################################################################################################
+export TF_XLA_FLAGS=--tf_xla_cpu_global_jit
+
 # git
 ##################################################################################################
-# shellcheck source=/dev/null
 source ~/.config/dotfiles/bashrc.git
 
 # neofetch
