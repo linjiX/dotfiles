@@ -16,17 +16,16 @@ true
 ##################################################################################################
 if [ "$(uname)" == Darwin ]; then
     export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
-    export PATH="$HOME/.local/bin:$PATH"
-
-    # arcanist
-    export PATH="$HOME/.arc/arcanist/bin:$PATH"
-    [ -r ~/.arc/arcanist/resources/shell/bash-completion ] &&
-        source ~/.arc/arcanist/resources/shell/bash-completion
 
     # bash_completion
     [ -r /usr/local/etc/profile.d/bash_completion.sh ] &&
         source /usr/local/etc/profile.d/bash_completion.sh
     _expand() { :; }
+
+    # arcanist
+    export PATH="$HOME/.arc/arcanist/bin:$PATH"
+    [ -r ~/.arc/arcanist/resources/shell/bash-completion ] &&
+        source ~/.arc/arcanist/resources/shell/bash-completion
 fi
 
 # PS1
@@ -169,9 +168,14 @@ export TF_XLA_FLAGS=--tf_xla_cpu_global_jit
 ##################################################################################################
 source ~/.config/dotfiles/bashrc.git
 
+# PATH
+##################################################################################################
+if [ "$(uname)" == Darwin ]; then
+    export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+fi
 # Remove duplicate items in $PATH
 PATH="$(echo -n "$PATH" |
-    awk -v RS=: -v ORS=: '!(a[$0]++) {printf("%s%s", length(a) > 1 ? ":" : "", $0)}')"
+    awk -v RS=: '!(a[$0]++) {printf("%s%s", length(a) > 1 ? ":" : "", $0)}')"
 
 # neofetch
 ##################################################################################################
