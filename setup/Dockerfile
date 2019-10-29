@@ -60,7 +60,8 @@ RUN ./applications.sh && \
     sudo rm -rf /var/lib/apt/lists/*
 
 # hadolint ignore=DL3004
-RUN sudo apt-get update && \
+RUN . ~/.profile  && \
+    sudo apt-get update && \
     sudo apt-get -y upgrade && \
     sudo apt-get -y autoremove --purge && \
     sudo rm -rf /var/lib/apt/lists/*

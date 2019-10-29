@@ -12,25 +12,14 @@
 # shellcheck source=/dev/null
 true
 
-# Reset $PATH
-##################################################################################################
-if [ "$(uname)" == Darwin ]; then
-    if [ -x /usr/libexec/path_helper ]; then
-        export PATH=""
-        eval "$(/usr/libexec/path_helper -s)"
-    fi
-else
-    source /etc/environment
-fi
-
 # MacOS
 ##################################################################################################
 if [ "$(uname)" == Darwin ]; then
     export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
-    export PATH="$HOME/.local/bin/:$PATH"
+    export PATH="$HOME/.local/bin:$PATH"
 
     # arcanist
-    export PATH="$HOME/.arc/arcanist/bin/:$PATH"
+    export PATH="$HOME/.arc/arcanist/bin:$PATH"
     [ -r ~/.arc/arcanist/resources/shell/bash-completion ] &&
         source ~/.arc/arcanist/resources/shell/bash-completion
 
@@ -179,6 +168,10 @@ export TF_XLA_FLAGS=--tf_xla_cpu_global_jit
 # git
 ##################################################################################################
 source ~/.config/dotfiles/bashrc.git
+
+# Remove duplicate items in $PATH
+PATH="$(echo -n "$PATH" |
+    awk -v RS=: -v ORS=: '!(a[$0]++) {printf("%s%s", length(a) > 1 ? ":" : "", $0)}')"
 
 # neofetch
 ##################################################################################################
