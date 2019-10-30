@@ -9,6 +9,7 @@ sudo apt-get update
 sudo apt-get install -y \
     tree \
     htop \
+    silversearcher-ag \
     arcanist \
     ranger \
     neofetch \

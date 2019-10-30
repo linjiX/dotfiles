@@ -174,8 +174,7 @@ if [ "$(uname)" == Darwin ]; then
     export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 fi
 # Remove duplicate items in $PATH
-PATH="$(echo -n "$PATH" |
-    awk -v RS=: '!(a[$0]++) {printf("%s%s", length(a) > 1 ? ":" : "", $0)}')"
+PATH="$(echo -n "$PATH" | awk -v RS=: '!(a[$0]++) {printf("%s%s", sep, $0); sep=RS}')"
 
 # neofetch
 ##################################################################################################
