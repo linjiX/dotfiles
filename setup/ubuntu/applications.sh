@@ -11,6 +11,7 @@ eval "$(pyenv virtualenv-init -)"
 
 # NeoVim
 pip3 install neovim
+nvim -c UpdateRemotePlugins -c sleep 1m -c quit
 
 # Git
 pip3 install gitlint
@@ -27,9 +28,11 @@ pip3 install yapf isort ipython pylint flake8
 ~/.vim/setup/install_clang_format.sh
 ~/.vim/setup/install_ccls.sh
 ~/.vim/setup/install_cppcheck.sh
+pip3 install cpplint
 
 # Bazel
 ~/.vim/setup/install_bazel.sh
+~/.vim/setup/install_bazelisk.sh
 ~/.vim/setup/install_buildifier.sh
 
 # Json
