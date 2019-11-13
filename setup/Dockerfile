@@ -54,6 +54,14 @@ RUN ./applications.sh && \
     sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
+COPY ./ubuntu/libraries.sh ./
+COPY ./ubuntu/libraries/ ./libraries/
+# hadolint ignore=DL3004
+RUN ./libraries.sh && \
+    rm ~/.wget-hsts && \
+    sudo rm -rf /tmp/* && \
+    sudo rm -rf /var/lib/apt/lists/*
+
 # hadolint ignore=DL3004
 RUN . ~/.profile  && \
     sudo apt-get update && \
