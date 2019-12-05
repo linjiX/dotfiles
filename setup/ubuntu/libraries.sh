@@ -5,9 +5,9 @@ set -e
 set -v
 
 ./libraries/install_pdal.sh
-./libraries/install_opencv3.sh
 ./libraries/install_rapidjson.sh
 ./libraries/install_emsdk.sh
+./libraries/install_opencv3.sh
 
 sudo apt-get update
 sudo apt-get install -y \
