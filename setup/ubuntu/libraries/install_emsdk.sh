@@ -12,9 +12,11 @@ set -v
 INSTALL_PATH="/opt/emsdk"
 VERSION="1.39.3"
 
-if ! dpkg -s git 1>/dev/null 2>&1; then
+if ! dpkg -s git python3-dev 1>/dev/null 2>&1; then
     sudo apt-get update
-    sudo apt-get install -y git
+    sudo apt-get install -y \
+        git \
+        python3-dev
 fi
 
 if [ ! -d $INSTALL_PATH ]; then
@@ -26,6 +28,8 @@ sudo git pull
 
 sudo ./emsdk install $VERSION
 ./emsdk activate $VERSION
+
+python3 ./emsdk/upstream/emscripten/embuilder.py build zlib
 
 echo "[ -f /opt/emsdk/emsdk_env.sh ] && source /opt/emsdk/emsdk_env.sh >/dev/null" >> ~/.bashrc
 
