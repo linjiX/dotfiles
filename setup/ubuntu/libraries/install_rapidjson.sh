@@ -21,7 +21,7 @@ if ! dpkg -s cmake make wget 1>/dev/null 2>&1; then
         make
 fi
 
-TMPDIR="$(mktemp -d)"
+TMPDIR="$(mktemp -d /tmp/install_rapidjson.XXXX)"
 pushd "$TMPDIR" >/dev/null
 wget https://github.com/Tencent/rapidjson/archive/$TARFILE
 tar -xf $TARFILE

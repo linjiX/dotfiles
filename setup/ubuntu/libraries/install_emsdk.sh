@@ -29,7 +29,7 @@ sudo git pull
 sudo ./emsdk install $VERSION
 ./emsdk activate $VERSION
 
-python3 ./emsdk/upstream/emscripten/embuilder.py build zlib
+python3 ./upstream/emscripten/embuilder.py build zlib
 
 echo "[ -f /opt/emsdk/emsdk_env.sh ] && source /opt/emsdk/emsdk_env.sh >/dev/null" >> ~/.bashrc
 

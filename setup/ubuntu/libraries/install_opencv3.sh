@@ -76,7 +76,7 @@ cmake \
 if [[ -z $DOCKER ]]; then
     make -j
 else
-    make
+    make -j3
 fi
 sudo make install
 
