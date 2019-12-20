@@ -119,6 +119,13 @@ alias e='cd ~/workspace/engineer/'
 alias m='cd /mnt/sdb1/'
 alias n='cd /mnt/nfs/'
 
+# nfs
+##################################################################################################
+if [ "$(uname)" == Darwin ]; then
+    alias nfs='cd ~/Desktop/nfs/'
+else
+    alias nfs='cd /mnt/nfs/'
+fi
 
 # pip
 ##################################################################################################
