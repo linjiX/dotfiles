@@ -22,6 +22,8 @@ OPENCV_CONTRIB_TARFILE="opencv_contrib.tar.gz"
 OPENCV_DIR="opencv-$VERSION"
 OPENCV_CONTRIB_DIR="opencv_contrib-$VERSION"
 
+OPENCV_JS_INSTALL_DIR="/usr/local/opt/opencv_js"
+
 sudo apt-get update
 sudo apt-get install -y \
     build-essential \
@@ -88,7 +90,8 @@ popd >/dev/null
 python3 ./platforms/js/build_js.py build_wasm --build_wasm --emscripten_dir=$EMSCRIPTEN_DIR
 pushd build_wasm >/dev/null
 make install
-sudo cp -r install /opt/opencv_js
+sudo mkdir -p "$(dirname $OPENCV_JS_INSTALL_DIR)"
+sudo cp -r install $OPENCV_JS_INSTALL_DIR
 
 popd >/dev/null
 popd >/dev/null
