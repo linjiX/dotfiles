@@ -43,9 +43,6 @@ RUN ./vim.sh && \
     sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/dotfiles.sh ./
-RUN ./dotfiles.sh
-
 COPY ./ubuntu/applications.sh ./
 # hadolint ignore=DL3004
 RUN ./applications.sh && \
@@ -61,6 +58,9 @@ RUN ./libraries.sh && \
     rm ~/.wget-hsts && \
     sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
+
+COPY ./ubuntu/dotfiles.sh ./
+RUN ./dotfiles.sh
 
 # hadolint ignore=DL3004
 RUN . ~/.profile  && \
