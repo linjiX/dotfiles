@@ -22,7 +22,7 @@ sudo npm install --global bash-language-server
 ~/.vim/setup/install_shfmt.sh
 
 # Python
-pip3 install yapf isort ipython pylint flake8
+pip3 install black isort ipython pylint flake8
 
 # C/C++
 ~/.vim/setup/install_clang_format.sh
