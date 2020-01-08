@@ -11,7 +11,6 @@ eval "$(pyenv virtualenv-init -)"
 
 # NeoVim
 pip3 install neovim
-nvim -c UpdateRemotePlugins -c sleep 1m -c quit
 
 # Git
 pip3 install gitlint
