@@ -28,6 +28,10 @@ tar -xf $TARFILE
 pushd $DIR >/dev/null
 mkdir build
 pushd build >/dev/null
+
+export CC=/usr/bin/gcc-5
+export CXX=/usr/bin/g++-5
+
 cmake ..
 make -j
 sudo make install
