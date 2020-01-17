@@ -23,7 +23,7 @@ fi
 
 TMPDIR="$(mktemp -d /tmp/install_rapidjson.XXXX)"
 pushd "$TMPDIR" >/dev/null
-wget https://github.com/Tencent/rapidjson/archive/$TARFILE
+wget -c https://github.com/Tencent/rapidjson/archive/$TARFILE
 tar -xf $TARFILE
 pushd $DIR >/dev/null
 mkdir build

@@ -45,8 +45,8 @@ sudo apt-get install -y \
 TMPDIR="$(mktemp -d /tmp/install_opencv3.XXXX)"
 pushd "$TMPDIR" >/dev/null
 
-wget https://github.com/opencv/opencv/archive/$TARFILE -O $OPENCV_TARFILE
-wget https://github.com/opencv/opencv_contrib/archive/$TARFILE -O $OPENCV_CONTRIB_TARFILE
+wget -c https://github.com/opencv/opencv/archive/$TARFILE -O $OPENCV_TARFILE
+wget -c https://github.com/opencv/opencv_contrib/archive/$TARFILE -O $OPENCV_CONTRIB_TARFILE
 
 tar -xf $OPENCV_TARFILE
 tar -xf $OPENCV_CONTRIB_TARFILE
