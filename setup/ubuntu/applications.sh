@@ -21,7 +21,13 @@ sudo npm install --global bash-language-server
 ~/.vim/setup/install_shfmt.sh
 
 # Python
-pip3 install black isort ipython pylint flake8
+pip3 install \
+    black \
+    isort \
+    ipython \
+    pylint \
+    flake8 \
+    mypy
 
 # C/C++
 ~/.vim/setup/install_clang_format.sh
@@ -42,7 +48,9 @@ sudo npm install --global prettier
 # npm install --global prettier
 
 # cmake
-pip3 install cmake_format cmakelint
+pip3 install \
+    cmake_format \
+    cmakelint
 
 # Dockerfile
 sudo npm install --global dockerfile-language-server-nodejs
