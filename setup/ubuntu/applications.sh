@@ -45,7 +45,8 @@ pip3 install demjson
 sudo npm install --global prettier
 
 # Markdown
-# npm install --global prettier
+# sudo npm install --global prettier
+sudo npm install --global markdownlint-cli
 
 # cmake
 pip3 install \
