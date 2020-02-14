@@ -15,17 +15,18 @@ RUN ./adduser.sh $NAME
 USER $NAME
 
 COPY ./ubuntu/common/basic.sh ./
-# hadolint ignore=DL3004
 RUN ./basic.sh && \
     ./clean.sh
 
 COPY ./ubuntu/common/advanced.sh ./
-# hadolint ignore=DL3004
 RUN ./advanced.sh && \
     ./clean.sh
 
+COPY ./ubuntu/lib/commom.sh ./
+RUN ./commom.sh && \
+    ./clean.sh
+
 COPY ./ubuntu/tools/install_tmux.sh ./
-# hadolint ignore=DL3004
 RUN ./install_tmux.sh && \
     ./clean.sh
 
@@ -38,22 +39,18 @@ RUN ./install_fzf.sh && \
     ./clean.sh
 
 COPY ./ubuntu/tools/install_node.sh ./
-# hadolint ignore=DL3004
 RUN ./install_node.sh && \
     ./clean.sh
 
 COPY ./ubuntu/tools/install_pyenv.sh ./
-# hadolint ignore=DL3004
 RUN ./install_pyenv.sh && \
     ./clean.sh
 
 COPY ./ubuntu/customize/vim.sh ./
-# hadolint ignore=DL3004
 RUN ./vim.sh && \
     ./clean.sh
 
 COPY ./ubuntu/tools/npm.sh ./
-# hadolint ignore=DL3004
 RUN ./npm.sh && \
     ./clean.sh
 
@@ -61,9 +58,20 @@ COPY ./ubuntu/tools/pip.sh ./
 RUN ./pip.sh && \
     ./clean.sh
 
-COPY ./ubuntu/lib ./
-# hadolint ignore=DL3004
-RUN ./lib.sh && \
+COPY ./ubuntu/lib/install_rapidjson.sh ./
+RUN ./install_rapidjson.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/lib/install_pdal.sh ./
+RUN ./install_pdal.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/lib/install_emsdk.sh ./
+RUN ./install_emsdk.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/lib/install_opencv3.sh ./
+RUN ./install_opencv3.sh && \
     ./clean.sh
 
 COPY ./ubuntu/customize/dotfiles.sh ./
