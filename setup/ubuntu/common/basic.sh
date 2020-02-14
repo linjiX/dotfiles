@@ -16,4 +16,5 @@ sudo apt-get install -y \
     iputils-ping \
     autoconf \
     openssh-server \
-    software-properties-common
+    software-properties-common \
+    apt-transport-https
