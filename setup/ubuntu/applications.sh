@@ -57,8 +57,11 @@ pip3 install \
 sudo npm install --global dockerfile-language-server-nodejs
 ~/.vim/setup/install_hadolint.sh
 
-# Php
+# php
 ~/.vim/setup/install_phpcs.sh
+
+# xml
+sudo npm install --global prettydiff
 
 # VimScript
 pip3 install vim-vint

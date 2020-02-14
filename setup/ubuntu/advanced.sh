@@ -15,6 +15,7 @@ sudo apt-get install -y \
     arcanist \
     ranger \
     neofetch \
+    libxml2-utils \
     golang-go \
     gcc-9 \
     g++-9
