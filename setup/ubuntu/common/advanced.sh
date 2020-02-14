@@ -19,7 +19,6 @@ sudo apt-get install -y \
     cloc \
     git-extras \
     silversearcher-ag \
-    arcanist \
     ranger \
     neofetch \
     libxml2-utils \

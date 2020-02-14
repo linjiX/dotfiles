@@ -3,10 +3,11 @@ FROM ubuntu:16.04
 WORKDIR /setup
 ENV DOCKER=true
 
+COPY ./ubuntu/common/clean.sh ./
 COPY ./ubuntu/common/sources.list /etc/apt/sources.list.ustc
 COPY ./ubuntu/common/sudo.sh ./
 RUN ./sudo.sh ./ && \
-    rm -rf /var/lib/apt/lists/*
+    ./clean.sh
 
 ARG NAME=linji
 COPY ./ubuntu/common/adduser.sh ./
@@ -16,51 +17,54 @@ USER $NAME
 COPY ./ubuntu/common/basic.sh ./
 # hadolint ignore=DL3004
 RUN ./basic.sh && \
-    sudo rm -rf /var/lib/apt/lists/*
+    ./clean.sh
 
 COPY ./ubuntu/common/advanced.sh ./
 # hadolint ignore=DL3004
 RUN ./advanced.sh && \
-    sudo rm -rf /var/lib/apt/lists/*
+    ./clean.sh
 
-COPY ./ubuntu/tools/tmux.sh ./
+COPY ./ubuntu/tools/install_tmux.sh ./
 # hadolint ignore=DL3004
-RUN ./tmux.sh && \
-    sudo rm -rf /var/lib/apt/lists/*
+RUN ./install_tmux.sh && \
+    ./clean.sh
 
-COPY ./ubuntu/tools/node.sh ./
-# hadolint ignore=DL3004
-RUN ./node.sh
+COPY ./ubuntu/tools/install_arcanist.sh ./
+RUN ./install_arcanist.sh && \
+    ./clean.sh
 
-COPY ./ubuntu/tools/pyenv.sh ./
+COPY ./ubuntu/tools/install_fzf.sh ./
+RUN ./install_fzf.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_node.sh ./
 # hadolint ignore=DL3004
-RUN ./pyenv.sh && \
-    rm -rf ~/.cache && \
-    sudo rm -rf /tmp/* && \
-    sudo rm -rf /var/lib/apt/lists/*
+RUN ./install_node.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_pyenv.sh ./
+# hadolint ignore=DL3004
+RUN ./install_pyenv.sh && \
+    ./clean.sh
 
 COPY ./ubuntu/customize/vim.sh ./
 # hadolint ignore=DL3004
 RUN ./vim.sh && \
-    rm ~/.wget-hsts && \
-    rm ~/.viminfo && \
-    sudo rm -rf /tmp/* && \
-    sudo rm -rf /var/lib/apt/lists/*
+    ./clean.sh
 
 COPY ./ubuntu/tools/npm.sh ./
 # hadolint ignore=DL3004
 RUN ./npm.sh && \
-    rm -rf ~/.npm
+    ./clean.sh
 
 COPY ./ubuntu/tools/pip.sh ./
-RUN ./pip.sh
+RUN ./pip.sh && \
+    ./clean.sh
 
 COPY ./ubuntu/lib ./
 # hadolint ignore=DL3004
 RUN ./lib.sh && \
-    rm ~/.wget-hsts && \
-    sudo rm -rf /tmp/* && \
-    sudo rm -rf /var/lib/apt/lists/*
+    ./clean.sh
 
 COPY ./ubuntu/customize/dotfiles.sh ./
 RUN ./dotfiles.sh
@@ -70,7 +74,7 @@ RUN . ~/.profile  && \
     sudo apt-get update && \
     sudo apt-get -y upgrade && \
     sudo apt-get -y autoremove --purge && \
-    sudo rm -rf /var/lib/apt/lists/*
+    ./clean.sh
 
 ENV TERM=xterm-256color \
     LANG=en_US.UTF-8
