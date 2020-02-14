@@ -57,7 +57,7 @@ RUN ./pip.sh
 
 COPY ./ubuntu/lib ./
 # hadolint ignore=DL3004
-RUN ./lib/lib.sh && \
+RUN ./lib.sh && \
     rm ~/.wget-hsts && \
     sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*

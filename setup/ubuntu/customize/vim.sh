@@ -6,7 +6,21 @@ set -v
 git clone --depth=1 https://github.com/linjiX/.vim.git ~/.vim
 ~/.vim/setup/install_vim.sh
 
-for file in ~/.vim/setup/*
-do
-    bash "$file"
-done
+# bazel
+~/.vim/setup/install_bazel.sh
+~/.vim/setup/install_bazelisk.sh
+~/.vim/setup/install_buildifier.sh
+
+# C++
+~/.vim/setup/install_ccls.sh
+~/.vim/setup/install_clang_format.sh
+~/.vim/setup/install_cppcheck.sh
+
+# Dockerfile
+~/.vim/setup/install_hadolint.sh
+
+# php
+~/.vim/setup/install_phpcs.sh
+
+# shell
+~/.vim/setup/install_shfmt.sh
