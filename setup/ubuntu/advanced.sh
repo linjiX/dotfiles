@@ -11,6 +11,8 @@ sudo apt-get update
 sudo apt-get install -y \
     tree \
     htop \
+    cloc \
+    git-extras \
     silversearcher-ag \
     arcanist \
     ranger \
