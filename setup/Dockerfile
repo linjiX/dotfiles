@@ -3,39 +3,43 @@ FROM ubuntu:16.04
 WORKDIR /setup
 ENV DOCKER=true
 
-COPY ./ubuntu/sources.list /etc/apt/sources.list.ustc
-COPY ./ubuntu/sudo.sh ./
+COPY ./ubuntu/common/sources.list /etc/apt/sources.list.ustc
+COPY ./ubuntu/common/sudo.sh ./
 RUN ./sudo.sh ./ && \
     rm -rf /var/lib/apt/lists/*
 
 ARG NAME=linji
-COPY ./ubuntu/adduser.sh ./
+COPY ./ubuntu/common/adduser.sh ./
 RUN ./adduser.sh $NAME
 USER $NAME
 
-COPY ./ubuntu/basic.sh ./
+COPY ./ubuntu/common/basic.sh ./
 # hadolint ignore=DL3004
 RUN ./basic.sh && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/advanced.sh ./
+COPY ./ubuntu/common/advanced.sh ./
 # hadolint ignore=DL3004
 RUN ./advanced.sh && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/tmux.sh ./
+COPY ./ubuntu/tools/tmux.sh ./
 # hadolint ignore=DL3004
 RUN ./tmux.sh && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/pyenv.sh ./
+COPY ./ubuntu/tools/node.sh ./
+# hadolint ignore=DL3004
+RUN ./node.sh
+
+COPY ./ubuntu/tools/pyenv.sh ./
 # hadolint ignore=DL3004
 RUN ./pyenv.sh && \
     rm -rf ~/.cache && \
     sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/vim.sh ./
+COPY ./ubuntu/customize/vim.sh ./
 # hadolint ignore=DL3004
 RUN ./vim.sh && \
     rm ~/.wget-hsts && \
@@ -43,23 +47,22 @@ RUN ./vim.sh && \
     sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/applications.sh ./
+COPY ./ubuntu/tools/npm.sh ./
 # hadolint ignore=DL3004
-RUN ./applications.sh && \
+RUN ./npm.sh && \
+    rm -rf ~/.npm
+
+COPY ./ubuntu/tools/pip.sh ./
+RUN ./pip.sh
+
+COPY ./ubuntu/lib ./
+# hadolint ignore=DL3004
+RUN ./lib/lib.sh && \
     rm ~/.wget-hsts && \
-    rm -rf ~/.npm && \
     sudo rm -rf /tmp/* && \
     sudo rm -rf /var/lib/apt/lists/*
 
-COPY ./ubuntu/libraries.sh ./
-COPY ./ubuntu/libraries/ ./libraries/
-# hadolint ignore=DL3004
-RUN ./libraries.sh && \
-    rm ~/.wget-hsts && \
-    sudo rm -rf /tmp/* && \
-    sudo rm -rf /var/lib/apt/lists/*
-
-COPY ./ubuntu/dotfiles.sh ./
+COPY ./ubuntu/customize/dotfiles.sh ./
 RUN ./dotfiles.sh
 
 # hadolint ignore=DL3004

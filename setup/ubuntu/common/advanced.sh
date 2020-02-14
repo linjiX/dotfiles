@@ -24,3 +24,7 @@ sudo apt-get install -y \
 
 sudo ln -sf /usr/bin/gcc-9 /usr/bin/gcc
 sudo ln -sf /usr/bin/g++-9 /usr/bin/g++
+
+# dircolors
+curl https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark \
+    -o ~/.dircolors

@@ -12,9 +12,9 @@ sudo apt-get install -y \
     libeigen3-dev \
     libboost-dev
 
-./libraries/install_pdal.sh
-./libraries/install_rapidjson.sh
-./libraries/install_emsdk.sh
-./libraries/install_opencv3.sh
+./install/install_pdal.sh
+./install/install_rapidjson.sh
+./install/install_emsdk.sh
+./install/install_opencv3.sh
 
 popd >/dev/null
