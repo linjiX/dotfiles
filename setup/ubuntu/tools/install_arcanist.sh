@@ -33,7 +33,7 @@ else
 fi
 
 # shellcheck disable=SC2016
-echo 'export PATH="$PATH:'"$INSTALL_PATH"'/arcanist/bin/"' >>"$BASHRC"
+echo 'export PATH="$PATH:'"$INSTALL_PATH"'/arcanist/bin"' >>"$BASHRC"
 echo "source $INSTALL_PATH/arcanist/resources/shell/bash-completion" >>"$BASHRC"
 
 popd >/dev/null
