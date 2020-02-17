@@ -18,6 +18,7 @@ sudo apt-get install -y \
     htop \
     cloc \
     git-extras \
+    trash-cli \
     silversearcher-ag \
     ranger \
     neofetch \
