@@ -5,7 +5,8 @@ set -e
 set -v
 
 echo 'source ~/.config/dotfiles/bashrc' >> ~/.bashrc
-echo 'source ~/.config/dotfiles/tmux.conf' >> ~/.tmux.conf
+ln -sf ~/.config/dotfiles/tmux.conf ~/.tmux.conf
+ln -sf ~/.config/dotfiles/gitconfig ~/.gitconfig
 
 ./ubuntu/common/basic.sh
 ./ubuntu/common/advanced.sh

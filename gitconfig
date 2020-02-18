@@ -1,0 +1,9 @@
+[user]
+	name = linji.xue
+	email = linji.xue@graviti.cn
+[core]
+	editor = nvim
+[push]
+	default = simple
+[pull]
+	rebase = true
