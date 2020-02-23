@@ -116,7 +116,7 @@ alias w='cd ~/workspace/'
 alias p='cd ~/workspace/phabricator/'
 alias o='cd ~/workspace/office/'
 alias e='cd ~/workspace/engineer/'
-alias m='cd /mnt/sdb1/'
+alias D='cd ~/Downloads/'
 
 # nfs
 ##################################################################################################
