@@ -55,6 +55,7 @@ RUN ./npm.sh && \
     ./clean.sh
 
 COPY ./ubuntu/tools/pip.sh ./
+COPY ./ubuntu/tools/requirements.txt ./
 RUN ./pip.sh && \
     ./clean.sh
 

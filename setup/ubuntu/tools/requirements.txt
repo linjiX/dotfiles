@@ -1,0 +1,26 @@
+# NeoVim
+neovim
+
+# Git
+gitlint
+
+# Python
+black
+isort
+ipython
+pylint
+flake8
+mypy
+
+# Cpp
+cpplint
+
+# Json
+demjson
+
+# Cmake
+cmake_format
+cmakelint
+
+# VimScript
+vim-vint
