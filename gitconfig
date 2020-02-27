@@ -15,3 +15,10 @@
 [difftool "vimdiff"]
 	path = nvim
 	cmd = "$merge_tool_path" -R -f -d -c 'cd $GIT_PREFIX' "$REMOTE" "$LOCAL"
+[merge]
+	tool = vimdiff
+[mergetool]
+	prompt = false
+	trustExitCode = true
+[mergetool "vimdiff"]
+	path = nvim
