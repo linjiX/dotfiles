@@ -9,4 +9,4 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-pip3 install -r requirements.txt
+pip3 install -r "$(dirname "${BASH_SOURCE[0]}")/requirements.txt"
