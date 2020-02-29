@@ -7,8 +7,6 @@ git clone --depth=1 https://github.com/linjiX/.vim.git ~/.vim
 ~/.vim/setup/install_vim.sh
 
 # bazel
-~/.vim/setup/install_bazel.sh
-~/.vim/setup/install_bazelisk.sh
 ~/.vim/setup/install_buildifier.sh
 
 # C++

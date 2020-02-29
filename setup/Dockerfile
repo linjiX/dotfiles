@@ -38,6 +38,14 @@ COPY ./ubuntu/tools/install_fzf.sh ./
 RUN ./install_fzf.sh && \
     ./clean.sh
 
+COPY ./ubuntu/tools/install_bazel.sh ./
+RUN ./install_bazel.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_bazelisk.sh ./
+RUN ./install_bazelisk.sh && \
+    ./clean.sh
+
 COPY ./ubuntu/tools/install_node.sh ./
 RUN ./install_node.sh && \
     ./clean.sh
