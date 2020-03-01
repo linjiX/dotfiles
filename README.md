@@ -6,6 +6,7 @@ My linux configuration
 
 -   bashrc
 -   tmux
+-   gitconfig
 
 ## Usage
 
