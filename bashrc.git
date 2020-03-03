@@ -14,7 +14,7 @@ alias ggr='git log --graph --oneline --decorate --all'
 
 # git alias from oh-my-zsh
 ##################################################################################################
-alias g='git'
+# alias g='git'
 alias gst='git status'
 alias gss='git status -s'
 alias gsh='git stash'
