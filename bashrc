@@ -121,12 +121,12 @@ alias o='cd ~/workspace/office/'
 alias e='cd ~/workspace/engineer/'
 alias D='cd ~/Downloads/'
 
-# nfs
-##################################################################################################
 if [ "$(uname)" == Darwin ]; then
     alias n='cd ~/Desktop/nfs/'
+    alias C='cd ~/Library/Caches/'
 else
     alias n='cd /mnt/nfs/'
+    alias C='cd ~/.cache/'
 fi
 
 # pip
@@ -175,7 +175,11 @@ export TF_XLA_FLAGS=--tf_xla_cpu_global_jit
 
 # git
 ##################################################################################################
-source ~/.config/dotfiles/bashrc.git
+source ~/.config/dotfiles/git.bash
+
+# private
+##################################################################################################
+[ -r ~/.config/dotfiles/private.bash ] && source ~/.config/dotfiles/private.bash
 
 # PATH
 ##################################################################################################
