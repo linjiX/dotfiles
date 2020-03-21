@@ -22,3 +22,6 @@ git clone --depth=1 https://github.com/linjiX/.vim.git ~/.vim
 
 # shell
 ~/.vim/setup/install_shfmt.sh
+
+# json
+~/.vim/setup/install_jq.sh
