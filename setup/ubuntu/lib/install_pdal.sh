@@ -38,11 +38,7 @@ mkdir build
 pushd build >/dev/null
 
 cmake ..
-if [[ -z $DOCKER ]]; then
-    make -j
-else
-    make -j3
-fi
+make -j "$(nproc)"
 sudo make install
 
 popd >/dev/null

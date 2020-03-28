@@ -1,7 +1,6 @@
 FROM ubuntu:16.04
 
 WORKDIR /setup
-ENV DOCKER=true
 
 COPY ./ubuntu/common/clean.sh ./
 COPY ./ubuntu/common/sources.list /etc/apt/sources.list.ustc

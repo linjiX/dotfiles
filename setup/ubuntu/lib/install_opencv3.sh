@@ -75,11 +75,7 @@ cmake \
     -D OPENCV_EXTRA_MODULES_PATH=../../"$OPENCV_CONTRIB_DIR"/modules \
     ..
 
-if [[ -z $DOCKER ]]; then
-    make -j
-else
-    make -j3
-fi
+make -j "$(nproc)"
 sudo make install
 
 popd >/dev/null
