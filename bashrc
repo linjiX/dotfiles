@@ -12,6 +12,8 @@
 # shellcheck source=/dev/null
 true
 
+export HISTCONTROL=ignoreboth
+
 # MacOS
 ##################################################################################################
 if [ "$(uname)" == Darwin ]; then
