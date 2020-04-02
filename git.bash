@@ -9,7 +9,6 @@
 #                                                                           #
 #############################################################################
 
-alias gitgraph='git log --graph --oneline --decorate --all'
 alias ggr='git log --graph --oneline --decorate --all'
 
 # git alias from oh-my-zsh

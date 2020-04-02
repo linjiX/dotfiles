@@ -22,3 +22,5 @@
 	trustExitCode = true
 [mergetool "vimdiff"]
 	path = nvim
+[alias]
+	graph = log --graph --oneline --decorate
