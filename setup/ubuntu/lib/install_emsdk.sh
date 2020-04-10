@@ -10,7 +10,7 @@ set -v
 #################
 
 INSTALL_PATH="/opt/emsdk"
-VERSION="1.39.3"
+VERSION="1.39.12"
 
 if ! dpkg -s git python3-dev 1>/dev/null 2>&1; then
     sudo apt-get update
@@ -20,7 +20,7 @@ if ! dpkg -s git python3-dev 1>/dev/null 2>&1; then
 fi
 
 if [ ! -d $INSTALL_PATH ]; then
-    sudo git clone https://github.com/emscripten-core/emsdk.git $INSTALL_PATH
+    sudo git clone --depth=1 https://github.com/emscripten-core/emsdk.git $INSTALL_PATH
 fi
 
 pushd $INSTALL_PATH >/dev/null
