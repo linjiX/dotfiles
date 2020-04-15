@@ -22,5 +22,8 @@ demjson
 cmake_format
 cmakelint
 
+# Yaml
+yamllint
+
 # VimScript
 vim-vint
