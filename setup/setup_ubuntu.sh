@@ -16,6 +16,7 @@ ln -sf ~/.config/dotfiles/gitconfig ~/.gitconfig
 ./ubuntu/tools/install_bazel.sh
 ./ubuntu/tools/install_bazelisk.sh
 ./ubuntu/tools/install_node.sh
+./ubuntu/tools/install_python3.sh
 ./ubuntu/tools/install_pyenv.sh
 ./ubuntu/customize/vim.sh
 ./ubuntu/tools/pip.sh

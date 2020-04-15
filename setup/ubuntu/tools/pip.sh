@@ -10,3 +10,4 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 pip3 install -r "$(dirname "${BASH_SOURCE[0]}")/requirements.txt"
+/usr/bin/pip3 install -r "$(dirname "${BASH_SOURCE[0]}")/requirements.txt"
