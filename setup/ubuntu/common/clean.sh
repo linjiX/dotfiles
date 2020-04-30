@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 rm -f ~/.wget-hsts
 rm -f ~/.viminfo

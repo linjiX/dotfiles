@@ -2,8 +2,8 @@
 
 # https://www.bazel.build/
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 #################
 # Install Bazel #

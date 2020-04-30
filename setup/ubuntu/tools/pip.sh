@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"

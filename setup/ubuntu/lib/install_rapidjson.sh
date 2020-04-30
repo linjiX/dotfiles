@@ -2,16 +2,16 @@
 
 # https://github.com/Tencent/rapidjson
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 #####################
 # Install rapidjson #
 #####################
 
-VERSION="1.1.0"
-TARFILE="v$VERSION.tar.gz"
-DIR="rapidjson-$VERSION"
+readonly VERSION="1.1.0"
+readonly TARFILE="v$VERSION.tar.gz"
+readonly DIR="rapidjson-$VERSION"
 
 if ! dpkg -s cmake make wget 1>/dev/null 2>&1; then
     sudo apt-get update
@@ -21,7 +21,7 @@ if ! dpkg -s cmake make wget 1>/dev/null 2>&1; then
         make
 fi
 
-TMPDIR="$(mktemp -d /tmp/install_rapidjson.XXXX)"
+readonly TMPDIR="$(mktemp -d /tmp/install_rapidjson.XXXX)"
 pushd "$TMPDIR" >/dev/null
 wget -c https://github.com/Tencent/rapidjson/archive/$TARFILE
 tar -xf $TARFILE

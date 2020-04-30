@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 # bash
 sudo npm install --global bash-language-server

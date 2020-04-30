@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 sudo add-apt-repository -y ppa:hnakamur/tmux
 sudo apt-get update

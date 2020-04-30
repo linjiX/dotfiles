@@ -2,8 +2,8 @@
 
 # https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 #####################
 # Install python3.7 #

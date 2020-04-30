@@ -2,15 +2,15 @@
 
 # https://emscripten.org/index.html
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 #################
 # Install emsdk #
 #################
 
-INSTALL_PATH="/opt/emsdk"
-VERSION="1.39.12"
+readonly INSTALL_PATH="/opt/emsdk"
+readonly VERSION="1.39.12"
 
 if ! dpkg -s git python3-dev 1>/dev/null 2>&1; then
     sudo apt-get update

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 git clone --depth=1 https://github.com/linjiX/.vim.git ~/.vim
 ~/.vim/setup/install_vim.sh

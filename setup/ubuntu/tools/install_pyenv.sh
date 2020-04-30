@@ -1,9 +1,9 @@
 #!/bin/bash
 
-set -e
-set -v
+set -eo pipefail
+set -x
 
-VERSION=3.7.4
+readonly VERSION=3.7.4
 
 sudo apt-get update
 sudo apt-get install -y \

@@ -4,25 +4,25 @@
 # https://github.com/opencv/opencv
 # https://github.com/opencv/opencv_contrib
 
-set -e
+set -euo pipefail
 
-EMSCRIPTEN_DIR="/opt/emsdk/upstream/emscripten/"
+readonly EMSCRIPTEN_DIR="/opt/emsdk/upstream/emscripten/"
 if [ ! -x $EMSCRIPTEN_DIR/emcc ]; then
     echo "Emscripten is not found in $EMSCRIPTEN_DIR, please run ./install_emsdk.sh first"
     exit 1
 fi
 
-set -v
+set -x
 
-VERSION="3.4.8"
+readonly VERSION="3.4.8"
 
-TARFILE="$VERSION.tar.gz"
-OPENCV_TARFILE="opencv.tar.gz"
-OPENCV_CONTRIB_TARFILE="opencv_contrib.tar.gz"
-OPENCV_DIR="opencv-$VERSION"
-OPENCV_CONTRIB_DIR="opencv_contrib-$VERSION"
+readonly TARFILE="$VERSION.tar.gz"
+readonly OPENCV_TARFILE="opencv.tar.gz"
+readonly OPENCV_CONTRIB_TARFILE="opencv_contrib.tar.gz"
+readonly OPENCV_DIR="opencv-$VERSION"
+readonly OPENCV_CONTRIB_DIR="opencv_contrib-$VERSION"
 
-OPENCV_JS_INSTALL_DIR="/usr/local/opt/opencv_js"
+readonly OPENCV_JS_INSTALL_DIR="/usr/local/opt/opencv_js"
 
 sudo apt-get update
 sudo apt-get install -y \
@@ -42,7 +42,7 @@ sudo apt-get install -y \
     libtiff-dev \
     libjasper-dev
 
-TMPDIR="$(mktemp -d /tmp/install_opencv3.XXXX)"
+readonly TMPDIR="$(mktemp -d /tmp/install_opencv3.XXXX)"
 pushd "$TMPDIR" >/dev/null
 
 wget -c https://github.com/opencv/opencv/archive/$TARFILE -O $OPENCV_TARFILE

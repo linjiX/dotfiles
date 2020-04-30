@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 useradd --no-log-init --create-home --shell /bin/bash "$1"
 sed -i '20a '"$1"'\tALL=(ALL:ALL) NOPASSWD: ALL' /etc/sudoers

@@ -2,15 +2,15 @@
 
 # https://secure.phabricator.com/book/phabricator/article/arcanist/
 
-set -e
-set -v
+set -euo pipefail
+set -x
 
 ####################
 # Install Arcanist #
 ####################
 
-INSTALL_PATH="$HOME/.arc"
-VERSION="stable"
+readonly INSTALL_PATH="$HOME/.arc"
+readonly VERSION="stable"
 
 if [ "$(uname)" != Darwin ] && ! dpkg -s git php7.0-cli php7.0-curl 1>/dev/null 2>&1; then
     sudo apt-get update

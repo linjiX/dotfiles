@@ -1,8 +1,8 @@
 #!/bin/bash
 
 pushd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null
-set -e
-set -v
+set -euo pipefail
+set -x
 
 echo 'source ~/.config/dotfiles/bashrc' >> ~/.bashrc
 ln -sf ~/.config/dotfiles/tmux.conf ~/.tmux.conf
