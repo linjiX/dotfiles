@@ -144,7 +144,10 @@ _pip_completion() {
 complete -o default -F _pip_completion pip
 complete -o default -F _pip_completion pip3
 complete -o default -F _pip_completion pip3.5
+complete -o default -F _pip_completion pip3.6
 complete -o default -F _pip_completion pip3.7
+complete -o default -F _pip_completion pip3.8
+complete -o default -F _pip_completion pip3.9
 # pip bash completion end
 
 # pyenv
