@@ -26,14 +26,21 @@ pushd "$INSTALL_PATH" >/dev/null
 git clone -b "$VERSION" --depth=1 https://github.com/phacility/libphutil.git
 git clone -b "$VERSION" --depth=1 https://github.com/phacility/arcanist.git
 
+# For bash user
 if [ "$(uname)" == Darwin ]; then
-    BASHRC="$HOME/.bash_profile"
+    readonly BASHRC="$HOME/.bash_profile"
 else
-    BASHRC="$HOME/.bashrc"
+    readonly BASHRC="$HOME/.bashrc"
 fi
 
 # shellcheck disable=SC2016
 echo 'export PATH="$PATH:'"$INSTALL_PATH"'/arcanist/bin"' >>"$BASHRC"
 echo "source $INSTALL_PATH/arcanist/resources/shell/bash-completion" >>"$BASHRC"
+
+# For zsh user
+readonly ZSHRC="$HOME/.zshrc"
+# shellcheck disable=SC2016
+echo 'export PATH="$PATH:'"$INSTALL_PATH"'/arcanist/bin/"' >>"$ZSHRC"
+echo "source $INSTALL_PATH/arcanist/resources/shell/bash-completion" >>"$ZSHRC"
 
 popd >/dev/null
