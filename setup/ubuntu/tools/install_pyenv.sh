@@ -1,9 +1,9 @@
 #!/bin/bash
 
-set -eo pipefail
+set -euo pipefail
 set -x
 
-readonly VERSION=3.7.4
+readonly VERSION=3.8.2
 
 sudo apt-get update
 sudo apt-get install -y \
@@ -19,8 +19,10 @@ git clone --depth=1 https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugi
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
+set +u
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+set -u
 
 pyenv install $VERSION
 pyenv global $VERSION
