@@ -1,27 +1,35 @@
 #!/bin/bash
 
+[ -r /etc/lsb-release ] && source /etc/lsb-release
+if [[ "$DISTRIB_CODENAME" != 'xenial' && "$DISTRIB_CODENAME" != 'focal' ]]; then
+    echo 'Only support ubuntu 16.04 and 20.04'
+    exit 1
+fi
+
 set -euo pipefail
 set -x
 
 git clone --depth=1 https://github.com/linjiX/.vim.git ~/.vim
 ~/.vim/setup/install_vim.sh
 
+if [ "$DISTRIB_CODENAME" == 'xenial' ]; then
+    # C++
+    ~/.vim/setup/install_ccls.sh
+    ~/.vim/setup/install_clang_format.sh
+    ~/.vim/setup/install_cppcheck.sh
+
+    # php
+    ~/.vim/setup/install_phpcs.sh
+
+    # json
+    ~/.vim/setup/install_jq.sh
+fi
+
 # bazel
 ~/.vim/setup/install_buildifier.sh
-
-# C++
-~/.vim/setup/install_ccls.sh
-~/.vim/setup/install_clang_format.sh
-~/.vim/setup/install_cppcheck.sh
 
 # Dockerfile
 ~/.vim/setup/install_hadolint.sh
 
-# php
-~/.vim/setup/install_phpcs.sh
-
 # shell
 ~/.vim/setup/install_shfmt.sh
-
-# json
-~/.vim/setup/install_jq.sh
