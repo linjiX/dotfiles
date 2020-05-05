@@ -11,4 +11,5 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 set -u
 
+pip3 install wheel
 pip3 install -r "$(dirname "${BASH_SOURCE[0]}")/requirements.txt"

@@ -23,7 +23,7 @@ fi
 
 git clone -b "$VERSION" --depth=1 https://github.com/phacility/arcanist.git "$INSTALL_PATH"
 
-"$INSTALL_PATH/bin/arc" shell-complete --generate
+"$INSTALL_PATH/bin/arc" shell-complete --generate --
 
 # For bash user
 if [ "$(uname)" == Darwin ]; then

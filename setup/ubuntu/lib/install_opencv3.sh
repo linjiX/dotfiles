@@ -39,8 +39,7 @@ sudo apt-get install -y \
     libswscale-dev \
     libjpeg-dev \
     libpng-dev \
-    libtiff-dev \
-    libjasper-dev
+    libtiff-dev
 
 readonly TMPDIR="$(mktemp -d /tmp/install_opencv3.XXXX)"
 pushd "$TMPDIR" >/dev/null

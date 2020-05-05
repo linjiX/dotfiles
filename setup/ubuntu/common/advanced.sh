@@ -37,7 +37,7 @@ if [ "$DISTRIB_CODENAME" == 'focal' ]; then
     sudo apt-get install -y \
         gcc \
         g++ \
-        universial-ctags \
+        universal-ctags \
         global \
         ripgrep \
         clang-format \
