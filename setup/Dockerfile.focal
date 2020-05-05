@@ -1,8 +1,6 @@
 FROM ubuntu:20.04
 
 WORKDIR /setup
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=Asia/Shanghai
 
 COPY ./ubuntu/common/clean.sh ./
 COPY ./ubuntu/common/sources.list.focal /etc/apt/sources.list.ustc
