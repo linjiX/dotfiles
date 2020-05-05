@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # https://secure.phabricator.com/book/phabricator/article/arcanist/
+# https://github.com/phacility/arcanist
 
 set -euo pipefail
 set -x
@@ -9,22 +10,20 @@ set -x
 # Install Arcanist #
 ####################
 
-readonly INSTALL_PATH="$HOME/.arc"
+readonly INSTALL_PATH="$HOME/.arcanist"
 readonly VERSION="stable"
 
-if [ "$(uname)" != Darwin ] && ! dpkg -s git php7.0-cli php7.0-curl 1>/dev/null 2>&1; then
+if [ "$(uname)" != Darwin ] && ! dpkg -s git php-cli php-curl 1>/dev/null 2>&1; then
     sudo apt-get update
     sudo apt-get install -y \
         git \
-        php7.0-cli \
-        php7.0-curl
+        php-cli \
+        php-curl
 fi
 
-mkdir -p "$INSTALL_PATH"
-pushd "$INSTALL_PATH" >/dev/null
+git clone -b "$VERSION" --depth=1 https://github.com/phacility/arcanist.git "$INSTALL_PATH"
 
-git clone -b "$VERSION" --depth=1 https://github.com/phacility/libphutil.git
-git clone -b "$VERSION" --depth=1 https://github.com/phacility/arcanist.git
+"$INSTALL_PATH/bin/arc" shell-complete --generate
 
 # For bash user
 if [ "$(uname)" == Darwin ]; then
@@ -34,13 +33,11 @@ else
 fi
 
 # shellcheck disable=SC2016
-echo 'export PATH="$PATH:'"$INSTALL_PATH"'/arcanist/bin"' >>"$BASHRC"
-echo "source $INSTALL_PATH/arcanist/resources/shell/bash-completion" >>"$BASHRC"
+echo 'export PATH="$PATH:'"$INSTALL_PATH"'/bin"' >>"$BASHRC"
+echo "source $INSTALL_PATH/support/shell/hooks/bash-completion.sh" >>"$BASHRC"
 
 # For zsh user
 readonly ZSHRC="$HOME/.zshrc"
 # shellcheck disable=SC2016
-echo 'export PATH="$PATH:'"$INSTALL_PATH"'/arcanist/bin/"' >>"$ZSHRC"
-echo "source $INSTALL_PATH/arcanist/resources/shell/bash-completion" >>"$ZSHRC"
-
-popd >/dev/null
+echo 'export PATH="$PATH:'"$INSTALL_PATH"'/bin/"' >>"$ZSHRC"
+echo "source $INSTALL_PATH/support/shell/hooks/bash-completion.sh" >>"$ZSHRC"

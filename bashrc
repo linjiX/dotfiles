@@ -23,11 +23,6 @@ if [ "$(uname)" == Darwin ]; then
     [ -r /usr/local/etc/profile.d/bash_completion.sh ] &&
         source /usr/local/etc/profile.d/bash_completion.sh
     _expand() { :; }
-
-    # arcanist
-    export PATH="$HOME/.arc/arcanist/bin:$PATH"
-    [ -r ~/.arc/arcanist/resources/shell/bash-completion ] &&
-        source ~/.arc/arcanist/resources/shell/bash-completion
 fi
 
 # PS1
