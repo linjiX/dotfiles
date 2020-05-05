@@ -1,16 +1,21 @@
 #!/bin/bash
 
+[ -r /etc/lsb-release ] && source /etc/lsb-release
+if [[ "$DISTRIB_CODENAME" != 'xenial' && "$DISTRIB_CODENAME" != 'focal' ]]; then
+    echo 'Only support ubuntu 16.04 and 20.04'
+    exit 1
+fi
+
 set -euo pipefail
 set -x
 
-sudo add-apt-repository -y ppa:dawidd0811/neofetch
-sudo add-apt-repository -y ppa:longsleep/golang-backports
-sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
+if [ "$DISTRIB_CODENAME" == 'xenial' ]; then
+    sudo add-apt-repository -y ppa:dawidd0811/neofetch
+    sudo add-apt-repository -y ppa:longsleep/golang-backports
 
-sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main'
-wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | sudo apt-key add -
-sudo apt-add-repository 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-10 main'
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+    sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main'
+    wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | sudo apt-key add -
+fi
 
 sudo apt-get update
 sudo apt-get install -y \
@@ -21,18 +26,27 @@ sudo apt-get install -y \
     trash-cli \
     silversearcher-ag \
     ranger \
-    neofetch \
-    libxml2-utils \
-    cmake \
-    llvm-10 \
-    libclang-10-dev \
-    clang-10 \
-    golang-go \
-    gcc-9 \
-    g++-9
+    libxml2-utils
 
-sudo ln -sf /usr/bin/gcc-9 /usr/bin/gcc
-sudo ln -sf /usr/bin/g++-9 /usr/bin/g++
+sudo apt-get install -y \
+    neofetch \
+    cmake \
+    golang-go
+
+if [ "$DISTRIB_CODENAME" == 'focal' ]; then
+    sudo apt-get install -y \
+        gcc \
+        g++ \
+        universial-ctags \
+        global \
+        ripgrep \
+        clang-format \
+        cppcheck \
+        ccls \
+        shellcheck \
+        php-codesniffer \
+        jq
+fi
 
 # dircolors
 curl https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark \

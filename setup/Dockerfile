@@ -21,6 +21,10 @@ COPY ./ubuntu/common/advanced.sh ./
 RUN ./advanced.sh && \
     ./clean.sh
 
+COPY ./ubuntu/tools/install_gcc.sh ./
+RUN ./install_gcc.sh && \
+    ./clean.sh
+
 COPY ./ubuntu/lib/commom.sh ./
 RUN ./commom.sh && \
     ./clean.sh
@@ -93,6 +97,7 @@ RUN . ~/.profile  && \
     ./clean.sh
 
 ENV TERM=xterm-256color \
+    SHELL=/bin/bash \
     LANG=en_US.UTF-8
 
 # hadolint ignore=DL3004

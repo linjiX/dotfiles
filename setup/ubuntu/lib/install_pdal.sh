@@ -4,6 +4,12 @@
 # https://github.com/PDAL/PDAL
 # https://launchpad.net/%7Eubuntugis/+archive/ubuntu/ppa/+index?batch=75&memo=75&start=75
 
+[ -r /etc/lsb-release ] && source /etc/lsb-release
+if [[ "$DISTRIB_CODENAME" != 'xenial' ]]; then
+    echo 'Only support ubuntu 16.04'
+    exit 1
+fi
+
 set -euo pipefail
 set -x
 
