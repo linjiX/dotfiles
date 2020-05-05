@@ -157,10 +157,13 @@ fi
 
 # docker
 ##################################################################################################
-DOCKER_PRE='docker run -it --rm -h Ubuntu --detach-keys="ctrl-s" '
-DOCKER_POST='-v ~/workspace:/home/linji/workspace linjixue/ubuntu:16.04'
+DOCKER_PRE='docker run -it --rm -v ~/workspace:/home/linji/workspace --detach-keys="ctrl-s" '
+DOCKER_XENIAL='-h xenial linjixue/ubuntu:16.04'
+DOCKER_FOCAL='-h focal linjixue/ubuntu:20.04'
 # shellcheck disable=SC2139
-alias ubuntu="$DOCKER_PRE$DOCKER_POST"
+alias xenial="$DOCKER_PRE$DOCKER_XENIAL"
+# shellcheck disable=SC2139
+alias focal="$DOCKER_PRE$DOCKER_FOCAL"
 
 if [ "$(uname)" == Darwin ]; then
     [ -r /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion ] &&

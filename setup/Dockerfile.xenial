@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 WORKDIR /setup
 
 COPY ./ubuntu/common/clean.sh ./
-COPY ./ubuntu/common/sources.list /etc/apt/sources.list.ustc
+COPY ./ubuntu/common/sources.list.xenial /etc/apt/sources.list.ustc
 COPY ./ubuntu/common/sudo.sh ./
 RUN ./sudo.sh ./ && \
     ./clean.sh

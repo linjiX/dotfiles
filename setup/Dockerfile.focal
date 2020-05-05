@@ -1,0 +1,95 @@
+FROM ubuntu:20.04
+
+WORKDIR /setup
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Asia/Shanghai
+
+COPY ./ubuntu/common/clean.sh ./
+COPY ./ubuntu/common/sources.list.focal /etc/apt/sources.list.ustc
+COPY ./ubuntu/common/sudo.sh ./
+RUN ./sudo.sh ./ && \
+    ./clean.sh
+
+ARG NAME=linji
+COPY ./ubuntu/common/adduser.sh ./
+RUN ./adduser.sh $NAME
+USER $NAME
+
+COPY ./ubuntu/common/basic.sh ./
+RUN ./basic.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/common/advanced.sh ./
+RUN ./advanced.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/lib/commom.sh ./
+RUN ./commom.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_tmux.sh ./
+RUN ./install_tmux.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_arcanist.sh ./
+RUN ./install_arcanist.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_fzf.sh ./
+RUN ./install_fzf.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_bazel.sh ./
+RUN ./install_bazel.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_bazelisk.sh ./
+RUN ./install_bazelisk.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_node.sh ./
+RUN ./install_node.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_pyenv.sh ./
+RUN ./install_pyenv.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/customize/vim.sh ./
+RUN ./vim.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/npm.sh ./
+RUN ./npm.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/pip.sh ./
+COPY ./ubuntu/tools/requirements.txt ./
+RUN ./pip.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/lib/install_emsdk.sh ./
+RUN ./install_emsdk.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/lib/install_opencv3.sh ./
+RUN ./install_opencv3.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/customize/dotfiles.sh ./
+RUN ./dotfiles.sh
+
+# hadolint ignore=DL3004
+RUN . ~/.profile  && \
+    sudo apt-get update && \
+    sudo apt-get -y upgrade && \
+    sudo apt-get -y autoremove --purge && \
+    ./clean.sh
+
+ENV TERM=xterm-256color \
+    SHELL=/bin/bash \
+    LANG=en_US.UTF-8
+
+# hadolint ignore=DL3004
+RUN sudo sed -i 's/NOPASSWD: //g' /etc/sudoers
+WORKDIR /home/$NAME
