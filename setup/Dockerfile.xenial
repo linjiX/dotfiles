@@ -98,7 +98,7 @@ RUN . ~/.profile  && \
 
 ENV TERM=xterm-256color \
     SHELL=/bin/bash \
-    LANG=en_US.UTF-8
+    LC_ALL=C.UTF-8
 
 # hadolint ignore=DL3004
 RUN sudo sed -i 's/NOPASSWD: //g' /etc/sudoers
