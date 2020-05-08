@@ -43,9 +43,10 @@ pushd $DIR >/dev/null
 mkdir build
 pushd build >/dev/null
 
-cmake ..
+cmake -DWITH_COMPLETION=ON ..
 make -j "$(nproc)"
 sudo make install
+sudo ln -sf /usr/local/etc/bash_completion.d/pdal /etc/bash_completion.d/pdal
 
 popd >/dev/null
 popd >/dev/null
