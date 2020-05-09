@@ -20,5 +20,6 @@ sudo apt-get install -y \
 if [ "$DISTRIB_CODENAME" == 'focal' ]; then
     sudo apt-get install -y \
         rapidjson-dev \
+        libpdal-dev \
         pdal
 fi
