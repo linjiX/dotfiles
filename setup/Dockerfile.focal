@@ -21,8 +21,24 @@ COPY ./ubuntu/common/advanced.sh ./
 RUN ./advanced.sh && \
     ./clean.sh
 
+COPY ./ubuntu/tools/install_node.sh ./
+RUN ./install_node.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/tools/install_pyenv.sh ./
+RUN ./install_pyenv.sh && \
+    ./clean.sh
+
 COPY ./ubuntu/lib/commom.sh ./
 RUN ./commom.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/lib/install_emsdk.sh ./
+RUN ./install_emsdk.sh && \
+    ./clean.sh
+
+COPY ./ubuntu/lib/install_opencv3.sh ./
+RUN ./install_opencv3.sh && \
     ./clean.sh
 
 COPY ./ubuntu/tools/install_tmux.sh ./
@@ -45,14 +61,6 @@ COPY ./ubuntu/tools/install_bazelisk.sh ./
 RUN ./install_bazelisk.sh && \
     ./clean.sh
 
-COPY ./ubuntu/tools/install_node.sh ./
-RUN ./install_node.sh && \
-    ./clean.sh
-
-COPY ./ubuntu/tools/install_pyenv.sh ./
-RUN ./install_pyenv.sh && \
-    ./clean.sh
-
 COPY ./ubuntu/customize/vim.sh ./
 RUN ./vim.sh && \
     ./clean.sh
@@ -64,14 +72,6 @@ RUN ./npm.sh && \
 COPY ./ubuntu/tools/pip.sh ./
 COPY ./ubuntu/tools/requirements.txt ./
 RUN ./pip.sh && \
-    ./clean.sh
-
-COPY ./ubuntu/lib/install_emsdk.sh ./
-RUN ./install_emsdk.sh && \
-    ./clean.sh
-
-COPY ./ubuntu/lib/install_opencv3.sh ./
-RUN ./install_opencv3.sh && \
     ./clean.sh
 
 COPY ./ubuntu/customize/dotfiles.sh ./
