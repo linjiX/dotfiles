@@ -21,16 +21,16 @@ COPY ./ubuntu/common/advanced.sh ./
 RUN ./advanced.sh && \
     ./clean.sh
 
+COPY ./ubuntu/lib/commom.sh ./
+RUN ./commom.sh && \
+    ./clean.sh
+
 COPY ./ubuntu/tools/install_node.sh ./
 RUN ./install_node.sh && \
     ./clean.sh
 
 COPY ./ubuntu/tools/install_pyenv.sh ./
 RUN ./install_pyenv.sh && \
-    ./clean.sh
-
-COPY ./ubuntu/lib/commom.sh ./
-RUN ./commom.sh && \
     ./clean.sh
 
 COPY ./ubuntu/lib/install_emsdk.sh ./
