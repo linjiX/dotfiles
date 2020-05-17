@@ -24,7 +24,6 @@ sudo apt-get install -y \
     cloc \
     git-extras \
     trash-cli \
-    silversearcher-ag \
     ranger \
     libxml2-utils
 

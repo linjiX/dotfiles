@@ -82,10 +82,9 @@ PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
 ##################################################################################################
 # [ -r ~/.fzf.bash ] && source ~/.fzf.bash
 FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
-FZF_AG_COMMAND='ag -l --nocolor --hidden --ignore-dir=".git" --ignore="*\.swp" -g ""'
 FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
 
-export FZF_CTRL_T_COMMAND="($FZF_GIT_COMMAND || $FZF_RG_COMMAND || $FZF_AG_COMMAND) 2> /dev/null"
+export FZF_CTRL_T_COMMAND="($FZF_GIT_COMMAND || $FZF_RG_COMMAND) 2> /dev/null"
 
 # setxkbmap
 ##################################################################################################
