@@ -46,7 +46,9 @@ RUN ./install_pdal.sh && \
     ./clean.sh
 
 COPY ./ubuntu/lib/install_emsdk.sh ./
+# hadolint ignore=DL3004
 RUN ./install_emsdk.sh && \
+    sudo rm -rf ~/.config && \
     ./clean.sh
 
 COPY ./ubuntu/lib/install_opencv3.sh ./
