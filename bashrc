@@ -13,6 +13,7 @@
 true
 
 export HISTCONTROL=ignoreboth
+export VISUAL=nvim
 
 # MacOS
 ##################################################################################################
