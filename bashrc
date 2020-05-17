@@ -59,12 +59,18 @@ seconds2days() { # convert integer seconds to Ddays,HH:MM:SS
 trap 'timer_start' DEBUG
 PROMPT_COMMAND=timer_stop
 
+if [[ -n "$NVIM_LISTEN_ADDRESS" || -n "$VIM_TERMINAL" ]]; then
+    PS1_END=">"
+else
+    PS1_END="\$"
+fi
+
 if [ "$(uname)" == Darwin ]; then
     PS1_HEAD="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)"
-    PS1_TAIL="$RED\n($WHITE\t$RED)\$ $RESET"
+    PS1_TAIL="$RED\n($WHITE\t$RED)$PS1_END $RESET"
 else
     PS1_HEAD="\n$PURPLE($WHITE\u@\h$PURPLE)-($WHITE\w$PURPLE)"
-    PS1_TAIL="$PURPLE\n($WHITE\t$PURPLE)\$ $RESET"
+    PS1_TAIL="$PURPLE\n($WHITE\t$PURPLE)$PS1_END $RESET"
 fi
 PS1_GIT="$PURPLE""\$(__git_ps1 \"  %s\")"
 PS1_TIMER="$GRAY""\$(seconds2days \${timer_show})"
