@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # https://emscripten.org/index.html
+# https://github.com/emscripten-core/emsdk
 
 set -euo pipefail
 set -x
@@ -10,7 +11,7 @@ set -x
 #################
 
 readonly INSTALL_PATH="/opt/emsdk"
-readonly VERSION="1.39.13"
+readonly VERSION="1.39.15"
 
 if ! dpkg -s git python3-dev bzip2 xz-utils 1>/dev/null 2>&1; then
     sudo apt-get update
@@ -29,10 +30,13 @@ pushd $INSTALL_PATH >/dev/null
 sudo git pull
 
 sudo ./emsdk install $VERSION
+sudo mkdir -m 777 upstream/emscripten/cache/
+
 ./emsdk activate $VERSION
 
 python3 ./upstream/emscripten/embuilder.py build zlib
 
-echo "[ -f /opt/emsdk/emsdk_env.sh ] && source /opt/emsdk/emsdk_env.sh >/dev/null" >> ~/.bashrc
+echo "[ -f $INSTALL_PATH/emsdk_env.sh ] && source $INSTALL_PATH/emsdk_env.sh >/dev/null" \
+    >>~/.bashrc
 
 popd >/dev/null
