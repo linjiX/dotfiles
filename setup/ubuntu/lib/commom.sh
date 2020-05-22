@@ -10,16 +10,18 @@ set -euo pipefail
 set -x
 
 sudo apt-get update
+
+if [ "$DISTRIB_CODENAME" == 'focal' ]; then
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y keyboard-configuration
+    sudo apt-get install -y \
+        rapidjson-dev \
+        libpdal-dev \
+        pdal
+fi
+
 sudo apt-get install -y \
     libpcl-dev \
     libgflags-dev \
     libgoogle-glog-dev \
     libeigen3-dev \
     libboost-dev
-
-if [ "$DISTRIB_CODENAME" == 'focal' ]; then
-    sudo apt-get install -y \
-        rapidjson-dev \
-        libpdal-dev \
-        pdal
-fi
