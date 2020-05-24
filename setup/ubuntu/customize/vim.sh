@@ -9,8 +9,7 @@ fi
 set -euo pipefail
 set -x
 
-git clone --depth=1 https://github.com/linjiX/.vim.git ~/.vim
-~/.vim/setup/install_vim.sh
+curl -sS https://raw.githubusercontent.com/linjiX/.vim/master/setup/setup.sh | bash
 
 if [ "$DISTRIB_CODENAME" == 'xenial' ]; then
     # C++
