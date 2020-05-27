@@ -5,6 +5,7 @@ twine
 
 # NeoVim
 neovim
+neovim-remote
 
 # Git
 gitlint
