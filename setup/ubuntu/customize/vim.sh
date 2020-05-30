@@ -6,29 +6,42 @@ if [[ "$DISTRIB_CODENAME" != 'xenial' && "$DISTRIB_CODENAME" != 'focal' ]]; then
     exit 1
 fi
 
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+pip3 install neovim
+
 set -euo pipefail
 set -x
 
 curl -sS https://raw.githubusercontent.com/linjiX/.vim/master/setup/setup.sh | bash
 
+readonly SETUP=$HOME/.config/nvim/setup
+
+# Vim8
+"$SETUP/vim8.sh"
+
 if [ "$DISTRIB_CODENAME" == 'xenial' ]; then
     # C++
-    ~/.vim/setup/install_ccls.sh
-    ~/.vim/setup/install_clang_format.sh
-    ~/.vim/setup/install_cppcheck.sh
+    "$SETUP/install_ccls.sh"
+    "$SETUP/install_clang_format.sh"
+    "$SETUP/install_cppcheck.sh"
 
     # php
-    ~/.vim/setup/install_phpcs.sh
+    "$SETUP/install_phpcs.sh"
 
     # json
-    ~/.vim/setup/install_jq.sh
+    "$SETUP/install_jq.sh"
 fi
 
 # bazel
-~/.vim/setup/install_buildifier.sh
+"$SETUP/install_buildifier.sh"
 
 # Dockerfile
-~/.vim/setup/install_hadolint.sh
+"$SETUP/install_hadolint.sh"
 
 # shell
-~/.vim/setup/install_shfmt.sh
+"$SETUP/install_shfmt.sh"
