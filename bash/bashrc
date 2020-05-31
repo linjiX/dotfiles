@@ -110,6 +110,7 @@ fi
 
 alias nvi='nvim'
 alias t='tmux'
+alias r='ranger'
 alias amax='ssh linji@192.168.6.70'
 
 alias h='cd ~'
@@ -181,11 +182,11 @@ export TF_XLA_FLAGS=--tf_xla_cpu_global_jit
 
 # git
 ##################################################################################################
-source ~/.config/dotfiles/git.bash
+source ~/.config/dotfiles/bash/git.bash
 
 # private
 ##################################################################################################
-[ -r ~/.config/dotfiles/private.bash ] && source ~/.config/dotfiles/private.bash
+[ -r ~/.config/dotfiles/bash/private.bash ] && source ~/.config/dotfiles/bash/private.bash
 
 # PATH
 ##################################################################################################
