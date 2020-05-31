@@ -11,7 +11,7 @@ set -x
 #################
 
 readonly INSTALL_PATH="/opt/emsdk"
-readonly VERSION="1.39.15"
+readonly VERSION="1.39.16"
 
 if ! dpkg -s git python3-dev bzip2 xz-utils 1>/dev/null 2>&1; then
     sudo apt-get update
@@ -23,15 +23,14 @@ if ! dpkg -s git python3-dev bzip2 xz-utils 1>/dev/null 2>&1; then
 fi
 
 if [ ! -d $INSTALL_PATH ]; then
-    sudo git clone --depth=1 https://github.com/emscripten-core/emsdk.git $INSTALL_PATH
+    sudo mkdir -m 777 $INSTALL_PATH
+    git clone --depth=1 https://github.com/emscripten-core/emsdk.git $INSTALL_PATH
 fi
 
 pushd $INSTALL_PATH >/dev/null
-sudo git pull
+git pull
 
-sudo ./emsdk install $VERSION
-sudo mkdir -m 777 upstream/emscripten/cache/
-
+./emsdk install $VERSION
 ./emsdk activate $VERSION
 
 python3 ./upstream/emscripten/embuilder.py build zlib
