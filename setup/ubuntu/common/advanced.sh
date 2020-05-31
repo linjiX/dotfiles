@@ -10,6 +10,7 @@ set -euo pipefail
 set -x
 
 if [ "$DISTRIB_CODENAME" == 'xenial' ]; then
+    sudo add-apt-repository -y ppa:hnakamur/tmux
     sudo add-apt-repository -y ppa:dawidd0811/neofetch
     sudo add-apt-repository -y ppa:longsleep/golang-backports
 
@@ -28,6 +29,7 @@ sudo apt-get install -y \
     libxml2-utils
 
 sudo apt-get install -y \
+    tmux \
     neofetch \
     cmake \
     golang-go

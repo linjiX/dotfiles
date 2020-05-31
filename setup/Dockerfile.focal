@@ -41,10 +41,6 @@ COPY ./ubuntu/lib/install_opencv3.sh ./
 RUN ./install_opencv3.sh && \
     ./clean.sh
 
-COPY ./ubuntu/tools/install_tmux.sh ./
-RUN ./install_tmux.sh && \
-    ./clean.sh
-
 COPY ./ubuntu/tools/install_arcanist.sh ./
 RUN ./install_arcanist.sh && \
     ./clean.sh
