@@ -21,7 +21,7 @@ readonly VERSION="2.0.1"
 readonly TARFILE="PDAL-$VERSION-src.tar.gz"
 readonly DIR="PDAL-$VERSION-src"
 
-if ! dpkg -s software-properties-common 1>/dev/null 2>&1; then
+if ! dpkg -s software-properties-common &>/dev/null; then
     sudo apt-get update
     sudo apt-get install -y software-properties-common
 fi

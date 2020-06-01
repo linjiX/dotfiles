@@ -13,7 +13,7 @@ set -x
 readonly INSTALL_PATH="/opt/emsdk"
 readonly VERSION="1.39.16"
 
-if ! dpkg -s git python3-dev bzip2 xz-utils 1>/dev/null 2>&1; then
+if ! dpkg -s git python3-dev bzip2 xz-utils &>/dev/null; then
     sudo apt-get update
     sudo apt-get install -y \
         git \

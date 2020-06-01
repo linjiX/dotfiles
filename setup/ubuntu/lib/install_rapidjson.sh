@@ -19,7 +19,7 @@ readonly VERSION="1.1.0"
 readonly TARFILE="v$VERSION.tar.gz"
 readonly DIR="rapidjson-$VERSION"
 
-if ! dpkg -s cmake make wget 1>/dev/null 2>&1; then
+if ! dpkg -s cmake make wget &>/dev/null; then
     sudo apt-get update
     sudo apt-get install -y \
         wget \

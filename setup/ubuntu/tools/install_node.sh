@@ -3,7 +3,7 @@
 set -euo pipefail
 set -x
 
-if ! dpkg -s curl 1>/dev/null 2>&1; then
+if ! dpkg -s curl &>/dev/null; then
     sudo apt-get update
     sudo apt-get install -y curl
 fi

@@ -13,7 +13,7 @@ set -x
 readonly INSTALL_PATH="$HOME/.arcanist"
 readonly VERSION="stable"
 
-if [ "$(uname)" != Darwin ] && ! dpkg -s git php-cli php-curl 1>/dev/null 2>&1; then
+if [ "$(uname)" != Darwin ] && ! dpkg -s git php-cli php-curl &>/dev/null; then
     sudo apt-get update
     sudo apt-get install -y \
         git \
