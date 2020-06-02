@@ -95,6 +95,14 @@ if command -v setxkbmap >/dev/null 2>&1 && [[ -n $DISPLAY ]] && [[ -z $SSH_CLIEN
     setxkbmap -option "shift:both_capslock"
 fi
 
+# bind
+##################################################################################################
+if [ "$(uname)" == Darwin ]; then
+    stty werase undef
+    stty discard undef
+fi
+bind '\C-w:unix-filename-rubout'
+
 # alias
 ##################################################################################################
 if [ "$(uname)" == Darwin ]; then
