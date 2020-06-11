@@ -17,7 +17,4 @@ ln -sf ~/.config/dotfiles/tmux/tmux.conf ~/.tmux.conf
 # ranger config
 git clone --depth=1 https://github.com/alexanderjeurissen/ranger_devicons \
     ~/.config/ranger/plugins/ranger_devicons
-pushd ~/.config/ranger/plugins/ranger_devicons >/dev/null
-make install
-popd
 ln -sf ~/.config/dotfiles/ranger/rc.conf ~/.config/ranger/rc.conf
