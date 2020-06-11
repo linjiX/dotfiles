@@ -17,7 +17,7 @@ pip3 install neovim
 set -euo pipefail
 set -x
 
-curl -sS https://raw.githubusercontent.com/linjiX/.vim/master/setup/setup.sh | bash
+curl -sS https://raw.githubusercontent.com/linjiX/nvim/master/setup/setup.sh | bash
 
 readonly SETUP=$HOME/.config/nvim/setup
 
