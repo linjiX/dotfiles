@@ -9,11 +9,12 @@ set -x
 # Install Bazel #
 #################
 
-if ! dpkg -s curl apt-transport-https &>/dev/null; then
+if ! dpkg -s curl apt-transport-https gpg-agent &>/dev/null; then
     sudo apt-get update
     sudo apt-get install -y \
         curl \
-        apt-transport-https
+        apt-transport-https \
+        gpg-agent
 fi
 
 curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
