@@ -3,5 +3,4 @@
 set -euo pipefail
 set -x
 
-git clone --depth=1 https://github.com/linjiX/dotfiles.git ~/.config/dotfiles/
-~/.config/dotfiles/setup.sh
+curl -sS https://raw.githubusercontent.com/linjiX/dotfiles/master/setup.sh | bash
