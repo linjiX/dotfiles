@@ -3,6 +3,8 @@
 set -euo pipefail
 set -x
 
+git clone --depth=1 https://github.com/linjiX/dotfiles.git ~/.config/dotfiles
+
 # bash config
 echo 'source ~/.config/dotfiles/bash/bashrc' >>~/.bashrc
 
