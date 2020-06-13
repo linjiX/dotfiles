@@ -1,9 +1,18 @@
 #!/bin/bash
 
+REPOSITORY="https://github.com/linjiX/dotfiles.git"
+
+while getopts "g" opt; do
+    case "$opt" in
+    g) REPOSITORY="git@github.com:linjiX/dotfiles.git" ;;
+    ?) echo "Invalid flag!" && exit 1 ;;
+    esac
+done
+
 set -euo pipefail
 set -x
 
-git clone --depth=1 https://github.com/linjiX/dotfiles.git ~/.config/dotfiles
+git clone --depth=1 $REPOSITORY ~/.config/dotfiles
 
 # bash config
 echo 'source ~/.config/dotfiles/bash/bashrc' >>~/.bashrc
