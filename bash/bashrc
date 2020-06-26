@@ -122,17 +122,16 @@ alias t='tmux'
 alias r='ranger'
 alias amax='ssh linji@192.168.6.70'
 
-alias h='cd ~'
 alias c='cd ~/.config/'
 alias d='cd ~/.config/dotfiles/'
 alias v='cd ~/.config/nvim/'
-alias s='cd ~/.local/share/'
 alias w='cd ~/workspace/'
 alias p='cd ~/workspace/phabricator/'
 alias g='cd ~/workspace/github/'
 alias o='cd ~/workspace/office/'
 alias e='cd ~/workspace/engineer/'
 alias D='cd ~/Downloads/'
+alias S='cd ~/.local/share/'
 
 if [ "$(uname)" == Darwin ]; then
     alias n='cd ~/Desktop/nfs/'
