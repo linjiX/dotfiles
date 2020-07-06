@@ -120,7 +120,6 @@ fi
 alias nvi='nvim'
 alias t='tmux'
 alias r='ranger'
-alias amax='ssh linji@192.168.6.70'
 
 alias c='cd ~/.config/'
 alias d='cd ~/.config/dotfiles/'
