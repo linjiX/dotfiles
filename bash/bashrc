@@ -140,6 +140,8 @@ else
     alias C='cd ~/.cache/'
 fi
 
+alias root='cd $(git rev-parse --show-toplevel)'
+
 # pip
 ##################################################################################################
 # pip bash completion start
