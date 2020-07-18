@@ -32,8 +32,18 @@ fi
 WHITE='\[\e[01;36m\]'
 RED='\[\e[01;31m\]'
 PURPLE='\[\e[01;35m\]'
-GRAY='\[\e[01;33m\]'
+LIGHT_GRAY='\[\e[01;34m\]'
+DARK_GRAY='\[\e[01;32m\]'
 RESET='\[\e[00m\]'
+
+python3_version() {
+    local version
+    version=$(python3 --version 2>/dev/null | awk '{print $2}')
+    if [ -z "$version" ]; then
+        return
+    fi
+    echo "  $version"
+}
 
 function timer_start() {
     timer=${timer:-$SECONDS}
@@ -75,9 +85,10 @@ else
     PS1_TAIL="$PURPLE\n($WHITE\t$PURPLE)$PS1_END $RESET"
 fi
 PS1_GIT="$PURPLE""\$(__git_ps1 \"  %s\")"
-PS1_TIMER="$GRAY""\$(seconds2days \${timer_show})"
+PS1_PYTHON="$DARK_GRAY""\$(python3_version)"
+PS1_TIMER="$LIGHT_GRAY""\$(seconds2days \${timer_show})"
 
-PS1=$PS1_HEAD$PS1_GIT$PS1_TIMER$PS1_TAIL
+PS1=$PS1_HEAD$PS1_GIT$PS1_PYTHON$PS1_TIMER$PS1_TAIL
 
 # fzf
 ##################################################################################################
