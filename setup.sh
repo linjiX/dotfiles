@@ -16,6 +16,9 @@ git clone --depth=1 $REPOSITORY ~/.config/dotfiles
 
 # bash config
 echo 'source ~/.config/dotfiles/bash/bashrc' >>~/.bashrc
+if [ "$(uname)" == Darwin ]; then
+    echo '[ -r ~/.bashrc ] && source ~/.bashrc' >>~/.bash_profile
+fi
 
 # git config
 ln -sf ~/.config/dotfiles/git/gitconfig ~/.gitconfig
