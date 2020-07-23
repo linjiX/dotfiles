@@ -12,7 +12,7 @@ gitlint
 
 # Python
 black
-isort
+isort==4.3.21
 ipython
 pylint
 flake8
