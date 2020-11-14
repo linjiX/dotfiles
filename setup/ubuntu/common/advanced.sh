@@ -13,12 +13,20 @@ if [ "$DISTRIB_CODENAME" == 'xenial' ]; then
     sudo add-apt-repository -y ppa:hnakamur/tmux
     sudo add-apt-repository -y ppa:dawidd0811/neofetch
     sudo add-apt-repository -y ppa:longsleep/golang-backports
+    sudo add-apt-repository -y ppa:git-core/ppa
 
     sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main'
     wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | sudo apt-key add -
 fi
 
 sudo apt-get update
+sudo apt-get install -y \
+    git \
+    tmux \
+    neofetch \
+    cmake \
+    golang-go
+
 sudo apt-get install -y \
     tree \
     htop \
@@ -27,12 +35,6 @@ sudo apt-get install -y \
     trash-cli \
     ranger \
     libxml2-utils
-
-sudo apt-get install -y \
-    tmux \
-    neofetch \
-    cmake \
-    golang-go
 
 if [ "$DISTRIB_CODENAME" == 'focal' ]; then
     sudo apt-get install -y \

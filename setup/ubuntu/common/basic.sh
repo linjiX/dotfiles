@@ -14,7 +14,6 @@ sudo apt-get install -y \
     curl \
     wget \
     bash-completion \
-    git \
     man \
     rar \
     unrar \
