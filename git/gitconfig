@@ -24,3 +24,5 @@
 	path = nvim
 [alias]
 	graph = log --graph --oneline --decorate
+[help]
+	autocorrect = 10
