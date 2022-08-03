@@ -38,4 +38,5 @@ ln -sf ~/.config/dotfiles/ranger/rc.conf ~/.config/ranger/rc.conf
 if [ "$(uname)" == Darwin ]; then
     defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$DOTFILES/iterm2/"
     defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+    defaults write com.googlecode.iterm2 NoSyncNeverRemindPrefsChangesLostForFile_selection 2
 fi
