@@ -6,7 +6,7 @@
 set -euo pipefail
 set -x
 
-readonly VERSION=3.8.2
+readonly VERSIONS="3.6.2 3.8.2"
 
 sudo apt-get update
 sudo apt-get install -y \
@@ -31,6 +31,8 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 set -u
 
-pyenv install $VERSION
-pyenv global $VERSION
-pip3 install --upgrade pip
+for version in $VERSIONS; do
+    pyenv install "$version"
+    pyenv global "$version"
+    pip3 install --upgrade pip
+done
