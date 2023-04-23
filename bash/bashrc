@@ -73,7 +73,7 @@ seconds2days() { # convert integer seconds to Ddays,HH:MM:SS
 trap 'timer_start' DEBUG
 PROMPT_COMMAND=timer_stop
 
-if [[ -n "$NVIM_LISTEN_ADDRESS" || -n "$VIM_TERMINAL" ]]; then
+if [[ -n "$NVIM" || -n "$VIM_TERMINAL" ]]; then
     PS1_END=">"
 else
     PS1_END="\$"
