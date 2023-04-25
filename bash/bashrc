@@ -31,14 +31,14 @@ fi
 
 # PS1
 ##################################################################################################
-WHITE='\[\e[01;36m\]'
-RED='\[\e[01;31m\]'
-PURPLE='\[\e[01;35m\]'
-LIGHT_GRAY='\[\e[01;34m\]'
-DARK_GRAY='\[\e[01;32m\]'
-RESET='\[\e[00m\]'
+_WHITE='\[\e[01;36m\]'
+_RED='\[\e[01;31m\]'
+_PURPLE='\[\e[01;35m\]'
+_LIGHT_GRAY='\[\e[01;34m\]'
+_DARK_GRAY='\[\e[01;32m\]'
+_RESET='\[\e[00m\]'
 
-python3_version() {
+_python3_version() {
     local version
     version=$(python3 --version 2>/dev/null | awk '{print $2}')
     if [ -z "$version" ]; then
@@ -47,17 +47,17 @@ python3_version() {
     echo "  $version"
 }
 
-timer_start() {
-    timer=${timer:-$SECONDS}
+_timer_start() {
+    _timer=${_timer:-$SECONDS}
 }
 
-timer_stop() {
+_timer_stop() {
     # shellcheck disable=SC2034
-    timer_show=$((SECONDS - timer))
-    unset timer
+    _timer_show=$((SECONDS - _timer))
+    unset _timer
 }
 
-seconds2days() { # convert integer seconds to Ddays,HH:MM:SS
+_seconds2days() { # convert integer seconds to Ddays,HH:MM:SS
     if [ "$1" -lt 3 ]; then
         return
     fi
@@ -70,35 +70,35 @@ seconds2days() { # convert integer seconds to Ddays,HH:MM:SS
         sed 's/^1days/1day/;s/^0days,\(00[h|m|s]\)*//;s/^0//'
 }
 
-trap 'timer_start' DEBUG
-PROMPT_COMMAND=timer_stop
+trap '_timer_start' DEBUG
+PROMPT_COMMAND=_timer_stop
 
 if [[ -n "$NVIM" || -n "$VIM_TERMINAL" ]]; then
-    PS1_END=">"
+    _PS1_END=">"
 else
-    PS1_END="\$"
+    _PS1_END="\$"
 fi
 
 if [ "$(uname)" == Darwin ]; then
-    PS1_HEAD="\n$RED($WHITE\u@\h$RED)-($WHITE\w$RED)"
-    PS1_TAIL="$RED\n($WHITE\t$RED)$PS1_END $RESET"
+    _PS1_HEAD="\n$_RED($_WHITE\u@\h$_RED)-($_WHITE\w$_RED)"
+    _PS1_TAIL="$_RED\n($_WHITE\t$_RED)$_PS1_END $_RESET"
 else
-    PS1_HEAD="\n$PURPLE($WHITE\u@\h$PURPLE)-($WHITE\w$PURPLE)"
-    PS1_TAIL="$PURPLE\n($WHITE\t$PURPLE)$PS1_END $RESET"
+    _PS1_HEAD="\n$_PURPLE($_WHITE\u@\h$_PURPLE)-($_WHITE\w$_PURPLE)"
+    _PS1_TAIL="$_PURPLE\n($_WHITE\t$_PURPLE)$_PS1_END $_RESET"
 fi
-PS1_GIT="$PURPLE""\$(__git_ps1 \"  %s\")"
-PS1_PYTHON="$DARK_GRAY""\$(python3_version)"
-PS1_TIMER="$LIGHT_GRAY""\$(seconds2days \${timer_show})"
+_PS1_GIT="$_PURPLE""\$(__git_ps1 \"  %s\")"
+_PS1_PYTHON="$_DARK_GRAY""\$(_python3_version)"
+_PS1_TIMER="$_LIGHT_GRAY""\$(_seconds2days \${_timer_show})"
 
-PS1=$PS1_HEAD$PS1_GIT$PS1_PYTHON$PS1_TIMER$PS1_TAIL
+PS1=$_PS1_HEAD$_PS1_GIT$_PS1_PYTHON$_PS1_TIMER$_PS1_TAIL
 
 # fzf
 ##################################################################################################
 # [ -r ~/.fzf.bash ] && source ~/.fzf.bash
-FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
-FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
+_FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
+_FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
 
-export FZF_CTRL_T_COMMAND="($FZF_GIT_COMMAND || $FZF_RG_COMMAND) 2> /dev/null"
+export FZF_CTRL_T_COMMAND="($_FZF_GIT_COMMAND || $_FZF_RG_COMMAND) 2> /dev/null"
 
 # setxkbmap
 ##################################################################################################
@@ -180,13 +180,13 @@ fi
 
 # docker
 ##################################################################################################
-DOCKER_PRE='docker run -it --rm -v ~/workspace:/home/linji/workspace --detach-keys="ctrl-s" '
-DOCKER_XENIAL='-h xenial linjixue/ubuntu:16.04'
-DOCKER_FOCAL='-h focal linjixue/ubuntu:20.04'
+_DOCKER_PRE='docker run -it --rm -v ~/workspace:/home/linji/workspace --detach-keys="ctrl-s" '
+_DOCKER_XENIAL='-h xenial linjixue/ubuntu:16.04'
+_DOCKER_FOCAL='-h focal linjixue/ubuntu:20.04'
 # shellcheck disable=SC2139
-alias xenial="$DOCKER_PRE$DOCKER_XENIAL"
+alias xenial="$_DOCKER_PRE$_DOCKER_XENIAL"
 # shellcheck disable=SC2139
-alias focal="$DOCKER_PRE$DOCKER_FOCAL"
+alias focal="$_DOCKER_PRE$_DOCKER_FOCAL"
 
 if [ "$(uname)" == Darwin ]; then
     if [ -r /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion ]; then
