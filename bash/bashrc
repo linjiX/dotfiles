@@ -18,9 +18,11 @@ export HISTSIZE=10000
 export VISUAL=nvim
 export MANPAGER='nvim +Man!'
 
+_UNAME=$(uname)
+
 # MacOS
 ##################################################################################################
-if [ "$(uname)" == Darwin ]; then
+if [ "$_UNAME" == Darwin ]; then
     export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 
     # bash_completion
@@ -79,7 +81,7 @@ else
     _PS1_END="\$"
 fi
 
-if [ "$(uname)" == Darwin ]; then
+if [ "$_UNAME" == Darwin ]; then
     _PS1_HEAD="\n$_RED($_WHITE\u@\h$_RED)-($_WHITE\w$_RED)"
     _PS1_TAIL="$_RED\n($_WHITE\t$_RED)$_PS1_END $_RESET"
 else
@@ -102,7 +104,7 @@ export FZF_CTRL_T_COMMAND="($_FZF_GIT_COMMAND || $_FZF_RG_COMMAND) 2> /dev/null"
 
 # setxkbmap
 ##################################################################################################
-if [ "$(uname)" != Darwin ] &&
+if [ "$_UNAME" != Darwin ] &&
     command -v setxkbmap >/dev/null 2>&1 &&
     [[ -n $DISPLAY ]] &&
     [[ -z $SSH_CLIENT ]]; then
@@ -114,7 +116,7 @@ fi
 
 # bind
 ##################################################################################################
-if [ "$(uname)" == Darwin ]; then
+if [ "$_UNAME" == Darwin ]; then
     stty werase undef
     stty discard undef
 fi
@@ -122,7 +124,7 @@ bind '\C-w:unix-filename-rubout'
 
 # alias
 ##################################################################################################
-if [ "$(uname)" == Darwin ]; then
+if [ "$_UNAME" == Darwin ]; then
     alias tree='tree -C'
     alias ls='ls -G'
     alias ll='ls -alFG'
@@ -188,7 +190,7 @@ alias xenial="$_DOCKER_PRE$_DOCKER_XENIAL"
 # shellcheck disable=SC2139
 alias focal="$_DOCKER_PRE$_DOCKER_FOCAL"
 
-if [ "$(uname)" == Darwin ]; then
+if [ "$_UNAME" == Darwin ]; then
     if [ -r /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion ]; then
         _docker() {
             source /Applications/Docker.app/Contents/Resources/etc/docker.bash-completion
@@ -218,7 +220,7 @@ source ~/.config/dotfiles/bash/git.bash
 
 # PATH
 ##################################################################################################
-if [ "$(uname)" == Darwin ]; then
+if [ "$_UNAME" == Darwin ]; then
     export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 fi
 # Remove duplicate items in $PATH
