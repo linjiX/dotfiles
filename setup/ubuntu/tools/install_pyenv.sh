@@ -6,7 +6,7 @@
 set -euo pipefail
 set -x
 
-readonly VERSIONS="3.6.2 3.8.2"
+readonly VERSIONS="3.6.2 3.8.6 3.10.6"
 
 sudo apt-get update
 sudo apt-get install -y \
