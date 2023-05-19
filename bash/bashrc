@@ -54,7 +54,6 @@ _timer_start() {
 }
 
 _timer_stop() {
-    # shellcheck disable=SC2034
     _timer_show=$((SECONDS - _timer))
     unset _timer
 }
