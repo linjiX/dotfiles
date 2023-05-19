@@ -28,7 +28,7 @@ rstfmt
 cpplint
 
 # Json
-demjson
+demjson3
 
 # Cmake
 cmake_format
