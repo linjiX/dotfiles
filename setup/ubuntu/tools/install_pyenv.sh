@@ -19,7 +19,8 @@ sudo apt-get install -y \
     libssl-dev \
     libffi-dev \
     libsqlite3-dev \
-    libreadline-dev
+    libreadline-dev \
+    liblzma-dev
 
 curl https://pyenv.run | bash
 
