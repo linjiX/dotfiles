@@ -28,7 +28,7 @@ if [ "$_UNAME" == Darwin ]; then
     # bash_completion
     [ -r /usr/local/etc/profile.d/bash_completion.sh ] &&
         source /usr/local/etc/profile.d/bash_completion.sh
-    _expand() { :; }
+    # _expand() { :; }
 fi
 
 # PS1
@@ -148,8 +148,8 @@ alias c='cd ~/.config/'
 alias d='cd ~/.config/dotfiles/'
 alias v='cd ~/.config/nvim/'
 alias w='cd ~/workspace/'
-alias p='cd ~/workspace/phabricator/'
 alias g='cd ~/workspace/github/'
+alias h='cd ~/workspace/hit/'
 alias o='cd ~/workspace/office/'
 alias e='cd ~/workspace/engineer/'
 alias D='cd ~/Downloads/'
@@ -176,6 +176,12 @@ if command -v pyenv &>/dev/null; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
+
+# nvm
+##################################################################################################
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"                                       # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
 
 # docker
 ##################################################################################################
