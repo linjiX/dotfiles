@@ -3,6 +3,7 @@
 	email = linji.xue@graviti.com
 [core]
 	editor = nvim
+	pager = less -FRX
 [push]
 	default = simple
 [pull]
