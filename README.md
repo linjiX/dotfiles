@@ -5,6 +5,7 @@ My linux configuration
 ## Content
 
 -   bashrc
+-   zshrc
 -   tmux
 -   gitconfig
 -   ranger

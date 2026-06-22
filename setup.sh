@@ -15,10 +15,31 @@ set -x
 
 git clone --depth=1 $REPOSITORY "$DOTFILES"
 
+append_source_once() {
+    local file="$1"
+    local line="$2"
+
+    touch "$file"
+    grep -qxF "$line" "$file" || echo "$line" >>"$file"
+}
+
 # bash config
-echo 'source ~/.config/dotfiles/bash/bashrc' >>~/.bashrc
+append_source_once ~/.bashrc 'source ~/.config/dotfiles/bash/bashrc'
 if [ "$(uname)" == Darwin ]; then
-    echo '[ -r ~/.bashrc ] && source ~/.bashrc' >>~/.bash_profile
+    append_source_once ~/.bash_profile '[ -r ~/.bashrc ] && source ~/.bashrc'
+fi
+
+# zsh config
+append_source_once ~/.zshrc 'source ~/.config/dotfiles/zsh/zshrc'
+if [ ! -d ~/.oh-my-zsh ]; then
+    git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+fi
+if [ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]; then
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+        ~/.oh-my-zsh/custom/themes/powerlevel10k
+fi
+if [ -r "$DOTFILES/zsh/p10k.zsh" ]; then
+    ln -sf "$DOTFILES/zsh/p10k.zsh" ~/.p10k.zsh
 fi
 
 # git config
