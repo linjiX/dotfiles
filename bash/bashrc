@@ -96,8 +96,8 @@ PS1=$_PS1_HEAD$_PS1_GIT$_PS1_PYTHON$_PS1_TIMER$_PS1_TAIL
 # fzf
 ##################################################################################################
 # [ -r ~/.fzf.bash ] && source ~/.fzf.bash
-_FZF_GIT_COMMAND='git ls-files -c -o --exclude-standard'
-_FZF_RG_COMMAND="rg --files --color=never --hidden -g '!.git/' -g '!*.swp'"
+_FZF_GIT_COMMAND='git ls-files --cached --others --exclude-standard'
+_FZF_RG_COMMAND="rg --files --color=never --hidden --glob '!.git/' --glob '!*.swp'"
 
 export FZF_CTRL_T_COMMAND="($_FZF_GIT_COMMAND || $_FZF_RG_COMMAND) 2> /dev/null"
 
