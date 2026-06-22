@@ -24,13 +24,13 @@ append_source_once() {
 }
 
 # bash config
-append_source_once ~/.bashrc 'source ~/.config/dotfiles/bash/bashrc'
+append_source_once ~/.bashrc 'source ~/.config/dotfiles/bash/bashrc.bash'
 if [ "$(uname)" == Darwin ]; then
     append_source_once ~/.bash_profile '[ -r ~/.bashrc ] && source ~/.bashrc'
 fi
 
 # zsh config
-append_source_once ~/.zshrc 'source ~/.config/dotfiles/zsh/zshrc'
+append_source_once ~/.zshrc 'source ~/.config/dotfiles/zsh/zshrc.zsh'
 if [ ! -d ~/.oh-my-zsh ]; then
     git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
 fi
