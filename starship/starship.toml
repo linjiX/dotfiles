@@ -15,6 +15,7 @@ $fossil_metrics\
 $git_branch\
 $git_commit\
 $git_state\
+$git_metrics\
 $git_status\
 $hg_branch\
 $hg_state\
