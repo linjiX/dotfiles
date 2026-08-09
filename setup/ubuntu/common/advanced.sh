@@ -11,7 +11,6 @@ set -x
 
 if [ "$DISTRIB_CODENAME" == 'xenial' ]; then
     sudo add-apt-repository -y ppa:hnakamur/tmux
-    sudo add-apt-repository -y ppa:dawidd0811/neofetch
     sudo add-apt-repository -y ppa:git-core/ppa
 
     sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ xenial main'
@@ -23,7 +22,6 @@ sudo apt-get update
 sudo apt-get install -y \
     git \
     tmux \
-    neofetch \
     cmake \
     golang-go
 

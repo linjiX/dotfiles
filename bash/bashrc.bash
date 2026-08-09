@@ -228,10 +228,6 @@ fi
 # Remove duplicate items in $PATH
 PATH="$(echo -n "$PATH" | awk -v RS=: '!(a[$0]++) {printf("%s%s", sep, $0); sep=RS}')"
 
-# neofetch
-##################################################################################################
-# neofetch 2>/dev/null
-
 # if [[ ! $TERM =~ screen  && ! $VIM ]]; then
 #     exec tmux
 # fi
