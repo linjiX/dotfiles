@@ -162,8 +162,33 @@ eval "$(pyenv virtualenv-init -)"
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# Keep the default Node version available without loading nvm at shell startup.
+export PATH="$NVM_DIR/versions/node/v22.20.0/bin:$PATH"
+
+# Load nvm and its completion only when they are actually needed.
+_load_nvm() {
+    [[ -n ${_NVM_LOADED-} ]] && return
+    unset -f nvm
+    source /opt/homebrew/opt/nvm/nvm.sh
+    typeset -g _NVM_LOADED=1
+}
+
+_load_nvm_completion() {
+    _load_nvm
+    [[ -n ${_NVM_COMPLETION_LOADED-} ]] && return
+    source /opt/homebrew/opt/nvm/etc/bash_completion.d/nvm
+    typeset -g _NVM_COMPLETION_LOADED=1
+}
+
+nvm() {
+    _load_nvm
+    nvm "$@"
+}
+
+_nvm_lazy_completion() {
+    _load_nvm_completion
+    _bash_complete -o default -F __nvm
+}
 
 # # MASON
 # export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
@@ -181,6 +206,7 @@ if [ -d "$HOME/.zfunc" ]; then
 fi
 
 autoload -Uz compinit && compinit
+compdef _nvm_lazy_completion nvm
 
 # ALIAS
 alias ll="ls -alFG"
