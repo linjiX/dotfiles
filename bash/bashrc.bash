@@ -142,7 +142,6 @@ fi
 
 alias nvi='nvim'
 alias t='tmux'
-alias r='ranger'
 
 alias c='cd ~/.config/'
 alias d='cd ~/.config/dotfiles/'

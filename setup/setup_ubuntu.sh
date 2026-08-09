@@ -19,11 +19,6 @@ ln -sf ~/.config/dotfiles/tmux/tmux.conf ~/.tmux.conf
 git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 git clone --depth=1 https://github.com/tmux-plugins/tmux-cpu ~/.tmux/plugins/tmux-cpu
 
-# ranger config
-git clone --depth=1 https://github.com/alexanderjeurissen/ranger_devicons \
-    ~/.config/ranger/plugins/ranger_devicons
-ln -sf ~/.config/dotfiles/ranger/rc.conf ~/.config/ranger/rc.conf
-
 if [ "$DISTRIB_CODENAME" == 'xenial' ]; then
     ./ubuntu/tools/install_gcc.sh
 fi

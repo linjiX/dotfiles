@@ -50,11 +50,6 @@ git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 git clone --depth=1 https://github.com/tmux-plugins/tmux-cpu ~/.tmux/plugins/tmux-cpu
 ln -sf ~/.config/dotfiles/tmux/tmux.conf ~/.tmux.conf
 
-# ranger config
-git clone --depth=1 https://github.com/alexanderjeurissen/ranger_devicons \
-    ~/.config/ranger/plugins/ranger_devicons
-ln -sf ~/.config/dotfiles/ranger/rc.conf ~/.config/ranger/rc.conf
-
 # iterm2 Specify the preferences directory
 if [ "$(uname)" == Darwin ]; then
     defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$DOTFILES/iterm2/"

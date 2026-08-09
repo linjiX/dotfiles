@@ -8,7 +8,6 @@ My linux configuration
 -   zshrc
 -   tmux
 -   gitconfig
--   ranger
 
 ## Setup
 

@@ -33,7 +33,6 @@ sudo apt-get install -y \
     cloc \
     git-extras \
     trash-cli \
-    ranger \
     libxml2-utils
 
 if [ "$DISTRIB_CODENAME" == 'focal' ]; then
