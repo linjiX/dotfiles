@@ -95,6 +95,16 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # plugins=(git fzf nvm pyenv)
 plugins=(git zsh-syntax-highlighting)
 
+# ZSH COMPLETIONS
+# These must be available before Oh My Zsh runs compinit.
+if type brew &>/dev/null; then
+    FPATH+=":$(brew --prefix)/share/zsh/site-functions"
+fi
+
+if [ -d "$HOME/.zfunc" ]; then
+    FPATH+=":$HOME/.zfunc"
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -232,22 +242,6 @@ _nvm_lazy_completion() {
     _bash_complete -o default -F __nvm
 }
 
-# # MASON
-# export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
-
-# ZSH COMPLETIONS
-
-# HOMEBREW https://formulae.brew.sh/formula/zsh-completions
-if type brew &>/dev/null; then
-    FPATH+=":$(brew --prefix)/share/zsh/site-functions"
-fi
-
-# RUFF https://docs.astral.sh/ruff/configuration/#shell-autocompletion
-if [ -d "$HOME/.zfunc" ]; then
-    FPATH+=":$HOME/.zfunc"
-fi
-
-autoload -Uz compinit && compinit
 compdef _nvm_lazy_completion nvm
 
 # ALIAS
