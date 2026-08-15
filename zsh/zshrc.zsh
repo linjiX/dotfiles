@@ -168,20 +168,6 @@ export FZF_CTRL_T_COMMAND="($_FZF_GIT_COMMAND || $_FZF_RG_COMMAND) 2> /dev/null"
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 
-# Keep shims and automatic rehash available at startup. Full shell integration
-# and virtualenv activation load only when they are needed.
-eval "$(command pyenv init --path)"
-
-_pyenv_load_full() {
-    [[ -n ${_PYENV_FULL_LOADED-} ]] && return
-
-    unset -f pyenv
-    eval "$(command pyenv init - --no-rehash)"
-    eval "$(command pyenv virtualenv-init -)"
-    typeset -g _PYENV_FULL_LOADED=1
-    add-zsh-hook -d chpwd _pyenv_maybe_load_full
-}
-
 _pyenv_has_local_version() {
     local dir=$PWD
     while true; do
@@ -191,26 +177,44 @@ _pyenv_has_local_version() {
     done
 }
 
-_pyenv_maybe_load_full() {
-    [[ -n ${_PYENV_FULL_LOADED-} ]] && return
-    _pyenv_has_local_version && _pyenv_load_full
-}
+if _pyenv_has_local_version; then
+    # A Python project needs the complete integration at startup.
+    eval "$(command pyenv init -)"
+    eval "$(command pyenv virtualenv-init -)"
+else
+    # Outside Python projects, keep shims and automatic rehash while delaying
+    # shell integration and virtualenv activation until they are needed.
+    eval "$(command pyenv init --path)"
 
-pyenv() {
-    _pyenv_load_full
-    pyenv "$@"
-}
+    _pyenv_load_full() {
+        [[ -n ${_PYENV_FULL_LOADED-} ]] && return
 
-_pyenv_lazy_completion() {
-    _pyenv_load_full
-    _pyenv
-}
+        unset -f pyenv
+        eval "$(command pyenv init - --no-rehash)"
+        eval "$(command pyenv virtualenv-init -)"
+        typeset -g _PYENV_FULL_LOADED=1
+        add-zsh-hook -d chpwd _pyenv_maybe_load_full
+    }
 
-autoload -Uz add-zsh-hook
-add-zsh-hook chpwd _pyenv_maybe_load_full
+    _pyenv_maybe_load_full() {
+        [[ -n ${_PYENV_FULL_LOADED-} ]] && return
+        _pyenv_has_local_version && _pyenv_load_full
+    }
 
-compctl -K _pyenv_lazy_completion pyenv
-_pyenv_maybe_load_full
+    pyenv() {
+        _pyenv_load_full
+        pyenv "$@"
+    }
+
+    _pyenv_lazy_completion() {
+        _pyenv_load_full
+        _pyenv
+    }
+
+    autoload -Uz add-zsh-hook
+    add-zsh-hook chpwd _pyenv_maybe_load_full
+    compctl -K _pyenv_lazy_completion pyenv
+fi
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
