@@ -13,7 +13,7 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 typeset -U path PATH
@@ -140,7 +140,7 @@ HISTSIZE=10000
 SAVEHIST=5000
 
 setopt histignoredups
-setopt histignorealldups 
+setopt histignorealldups
 setopt histreduceblanks
 setopt nosharehistory
 
