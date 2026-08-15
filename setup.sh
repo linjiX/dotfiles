@@ -38,9 +38,6 @@ if [ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]; then
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
         ~/.oh-my-zsh/custom/themes/powerlevel10k
 fi
-if [ -r "$DOTFILES/zsh/p10k.zsh" ]; then
-    ln -sf "$DOTFILES/zsh/p10k.zsh" ~/.p10k.zsh
-fi
 
 # git config
 ln -sf ~/.config/dotfiles/git/gitconfig ~/.gitconfig

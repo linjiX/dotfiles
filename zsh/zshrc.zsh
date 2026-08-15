@@ -268,5 +268,5 @@ alias S="cd ~/.local/share/"
 alias root='cd $(git rev-parse --show-toplevel)'
 
 # Powerlevel10k
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# To customize prompt, run `p10k configure` or edit zsh/p10k.zsh in this repository.
+[[ ! -f "$HOME/.config/dotfiles/zsh/p10k.zsh" ]] || source "$HOME/.config/dotfiles/zsh/p10k.zsh"
