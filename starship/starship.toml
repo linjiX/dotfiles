@@ -132,15 +132,15 @@ symbol = " "
 
 [bun]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [c]
 symbol = " "
-format = '[$symbol($version(-$name) )]($style)'
+format = ' [$symbol($version(-$name))]($style)'
 
 [cpp]
 symbol = " "
-format = '[$symbol($version(-$name) )]($style)'
+format = ' [$symbol($version(-$name))]($style)'
 
 [cmake]
 symbol = " "
@@ -159,11 +159,11 @@ symbol = " "
 
 [dart]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [deno]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [direnv]
 symbol = " "
@@ -180,11 +180,11 @@ symbol = " "
 
 [dotnet]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [elixir]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [elm]
 symbol = " "
@@ -242,7 +242,7 @@ untracked = '?${count} '
 
 [golang]
 symbol = " "
-format = '[$symbol($version )($mod_version )]($style)'
+format = ' [$symbol($version)( $mod_version)]($style)'
 
 [gradle]
 symbol = " "
@@ -267,22 +267,22 @@ ssh_symbol = " "
 
 [java]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [julia]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [kotlin]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [kubernetes]
 symbol = "󱃾 "
 
 [lua]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [maven]
 symbol = " "
@@ -310,7 +310,7 @@ symbol = " "
 
 [nodejs]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [ocaml]
 symbol = " "
@@ -392,7 +392,7 @@ symbol = " "
 
 [php]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [pijul_channel]
 symbol = " "
@@ -408,7 +408,7 @@ symbol = " "
 
 [python]
 symbol = " "
-format = '[$symbol${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+format = ' [$symbol${pyenv_prefix}(${version})( \($virtualenv\))]($style)'
 
 [raku]
 symbol = "󱖊 "
@@ -421,11 +421,11 @@ symbol = "󰟔 "
 
 [ruby]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [rust]
 symbol = "󱘗 "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [scala]
 symbol = " "
@@ -450,7 +450,7 @@ symbol = " "
 
 [swift]
 symbol = " "
-format = '[$symbol($version )]($style)'
+format = ' [$symbol($version)]($style)'
 
 [terraform]
 symbol = " "
