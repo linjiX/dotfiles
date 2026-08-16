@@ -32,7 +32,7 @@ alias gc!='git commit -v --amend'
 alias gca='git commit -v -a'
 alias gca!='git commit -v -a --amend'
 alias gco='git checkout'
-alias gcm='git checkout master'
+alias gcm='git checkout main'
 alias gr='git remote'
 alias grv='git remote -v'
 alias grmv='git remote rename'
@@ -79,7 +79,7 @@ alias gsts='git stash show --text'
 alias grt='cd $(git rev-parse --show-toplevel || echo ".")'
 
 # Git and svn mix
-alias git-svn-dcommit-push='git svn dcommit && git push github master:svntrunk'
+alias git-svn-dcommit-push='git svn dcommit && git push github main:svntrunk'
 
 alias gsr='git svn rebase'
 alias gsd='git svn dcommit'

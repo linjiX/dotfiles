@@ -12,8 +12,8 @@ My linux configuration
 ## Setup
 
 ```bash
-curl -sS https://raw.githubusercontent.com/linjiX/dotfiles/master/setup.sh | bash
+curl -sS https://raw.githubusercontent.com/linjiX/dotfiles/main/setup.sh | bash
 
 # If you prefer clone with SSH rather than clone with HTTPS
-curl -sS https://raw.githubusercontent.com/linjiX/dotfiles/master/setup.sh | bash -s -- -g
+curl -sS https://raw.githubusercontent.com/linjiX/dotfiles/main/setup.sh | bash -s -- -g
 ```
