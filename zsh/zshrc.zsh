@@ -221,11 +221,13 @@ export NVM_DIR="$HOME/.nvm"
 # Keep the default Node version available without loading nvm at shell startup.
 export PATH="$NVM_DIR/versions/node/v22.20.0/bin:$PATH"
 
-# Load nvm and its completion only when they are actually needed.
+# Load nvm and its official completion only when they are actually needed.
 _load_nvm() {
     [[ -n ${_NVM_LOADED-} ]] && return
     unset -f nvm
-    source /opt/homebrew/opt/nvm/nvm.sh
+    # NVM normally runs `nvm_auto use` while being sourced. In a completion
+    # context, zsh's special `PREFIX` parameter can look like npm's PREFIX.
+    source /opt/homebrew/opt/nvm/nvm.sh --no-use
     typeset -g _NVM_LOADED=1
 }
 
