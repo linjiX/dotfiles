@@ -31,68 +31,6 @@ if [ "$_UNAME" == Darwin ]; then
     # _expand() { :; }
 fi
 
-# PS1
-##################################################################################################
-_WHITE='\[\e[01;36m\]'
-_RED='\[\e[01;31m\]'
-_PURPLE='\[\e[01;35m\]'
-_LIGHT_GRAY='\[\e[01;34m\]'
-_DARK_GRAY='\[\e[01;32m\]'
-_RESET='\[\e[00m\]'
-
-_python3_version() {
-    local version
-    version=$(python3 --version 2>/dev/null | awk '{print $2}')
-    if [ -z "$version" ]; then
-        return
-    fi
-    echo "  $version"
-}
-
-_timer_start() {
-    _timer=${_timer:-$SECONDS}
-}
-
-_timer_stop() {
-    _timer_show=$((SECONDS - _timer))
-    unset _timer
-}
-
-_seconds2days() { # convert integer seconds to Ddays,HH:MM:SS
-    if [ "$1" -lt 3 ]; then
-        return
-    fi
-    local s=$(($1 % 60))
-    local m=$(($1 / 60 % 60))
-    local h=$(($1 / 60 / 60 % 24))
-    local d=$(($1 / 60 / 60 / 24))
-    printf " took "
-    printf "%ddays,%02dh%02dm%02ds" $d $h $m $s |
-        sed 's/^1days/1day/;s/^0days,\(00[h|m|s]\)*//;s/^0//'
-}
-
-trap '_timer_start' DEBUG
-PROMPT_COMMAND=_timer_stop
-
-if [[ -n "$NVIM" || -n "$VIM_TERMINAL" ]]; then
-    _PS1_END=">"
-else
-    _PS1_END="\$"
-fi
-
-if [ "$_UNAME" == Darwin ]; then
-    _PS1_HEAD="\n$_RED($_WHITE\u@\h$_RED)-($_WHITE\w$_RED)"
-    _PS1_TAIL="$_RED\n($_WHITE\t$_RED)$_PS1_END $_RESET"
-else
-    _PS1_HEAD="\n$_PURPLE($_WHITE\u@\h$_PURPLE)-($_WHITE\w$_PURPLE)"
-    _PS1_TAIL="$_PURPLE\n($_WHITE\t$_PURPLE)$_PS1_END $_RESET"
-fi
-_PS1_GIT="$_PURPLE""\$(__git_ps1 \"  %s\")"
-_PS1_PYTHON="$_DARK_GRAY""\$(_python3_version)"
-_PS1_TIMER="$_LIGHT_GRAY""\$(_seconds2days \${_timer_show})"
-
-PS1=$_PS1_HEAD$_PS1_GIT$_PS1_PYTHON$_PS1_TIMER$_PS1_TAIL
-
 # fzf
 ##################################################################################################
 # [ -r ~/.fzf.bash ] && source ~/.fzf.bash
@@ -219,6 +157,10 @@ if [ "$_UNAME" == Darwin ]; then
 fi
 # Remove duplicate items in $PATH
 PATH="$(echo -n "$PATH" | awk -v RS=: '!(a[$0]++) {printf("%s%s", sep, $0); sep=RS}')"
+
+# Starship
+export STARSHIP_CONFIG="$HOME/.config/dotfiles/starship/starship.toml"
+eval "$(starship init bash)"
 
 # if [[ ! $TERM =~ screen  && ! $VIM ]]; then
 #     exec tmux
