@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+remote="origin"
+base_branch="${remote}/main"
+session_key="review.session"
+
+usage() {
+    cat f <<'EOF'
+Usage:
+  git review <branch>
+  git review --restore
+
+Starts a review by fetching origin, saving the current working tree in a stash,
+and exposing <branch>'s changes since its merge base with origin/main as
+unstaged changes.
+
+Run `git review --restore` after reviewing to discard the review changes and
+restore the original branch, staged changes, unstaged changes, and untracked
+files. Ignored files are preserved throughout the review.
+EOF
+}
+
+die() {
+    echo "git review: $*" >&2
+    exit 1
+}
+
+ensure_repository() {
+    git rev-parse --show-toplevel >/dev/null || exit 1
+}
+
+restore() {
+    local session original_branch original_head stash_ref stash_selector
+
+    session="$(git config --local --get "$session_key" 2>/dev/null)" ||
+        die "no active review session"
+    IFS=: read -r original_branch original_head stash_ref <<<"$session"
+
+    # Verify everything needed for recovery before discarding the review state.
+    if [[ -n "$original_branch" ]]; then
+        git show-ref --verify --quiet "refs/heads/${original_branch}" ||
+            die "original branch no longer exists: ${original_branch}"
+    else
+        git rev-parse --verify --quiet "${original_head}^{commit}" >/dev/null ||
+            die "original commit is no longer available: ${original_head}"
+    fi
+
+    if [[ -n "$stash_ref" ]]; then
+        git rev-parse --verify --quiet "${stash_ref}^{commit}" >/dev/null ||
+            die "saved working tree is no longer available: ${stash_ref}"
+    fi
+
+    # Review state is deliberately dirty after reset. Discard its tracked
+    # changes, but leave untracked files alone.
+    git reset --hard
+
+    if [[ -n "$original_branch" ]]; then
+        git switch "$original_branch"
+    else
+        git switch --detach "$original_head"
+    fi
+
+    if [[ -n "$stash_ref" ]]; then
+        git stash apply --index "$stash_ref" || die \
+            "could not reapply the saved changes; they remain available as ${stash_ref}"
+
+        # `git stash drop` accepts a reflog selector (stash@{0}), rather than an
+        # object ID. Look it up by the ID stored at the start of the session so a
+        # stash created during review is never removed accidentally.
+        stash_selector="$(git stash list --format='%H %gd' | while read -r hash selector; do
+            [[ "$hash" == "$stash_ref" ]] && {
+                printf '%s' "$selector"
+                break
+            }
+        done)"
+        if [[ -n "$stash_selector" ]]; then
+            git stash drop "$stash_selector" >/dev/null ||
+                echo "git review: restored changes, but could not remove ${stash_selector}" >&2
+        else
+            echo "git review: restored changes; temporary stash ${stash_ref} was already removed" >&2
+        fi
+    fi
+
+    git config --local --unset-all "$session_key" 2>/dev/null || true
+    echo "Original working tree restored."
+}
+
+start_review() {
+    local remote target_branch review_base
+    remote="$1"
+    target_branch="$2"
+    review_base="$3"
+
+    git config --local --get "$session_key" >/dev/null 2>&1 &&
+        die "a review session is already active; run 'git review --restore' first"
+
+    git fetch "$remote"
+
+    local merge_base
+    merge_base="$(git merge-base "$review_base" "$target_branch" 2>/dev/null)" ||
+        die "could not find a merge base between ${target_branch} and ${review_base}"
+
+    local original_branch original_head stash_ref stash_before
+    original_branch="$(git symbolic-ref --quiet --short HEAD || true)"
+    original_head="$(git rev-parse HEAD)"
+    stash_ref=""
+
+    stash_before="$(git rev-parse --verify --quiet refs/stash || true)"
+    git stash push --include-untracked --message "git-review: automatic backup" >/dev/null
+    stash_ref="$(git rev-parse --verify --quiet refs/stash || true)"
+    [[ "$stash_ref" != "$stash_before" ]] || stash_ref=""
+
+    git config --local "$session_key" "${original_branch}:${original_head}:${stash_ref}"
+
+    git switch --detach "$target_branch"
+    git reset --mixed --intent-to-add "$merge_base"
+
+    echo "Review ready: ${target_branch} against the merge base with ${review_base}"
+    echo "Use 'git diff' or open the repository in your editor."
+    echo "When finished, run: git review --restore"
+}
+
+ensure_repository
+
+case "${1:-}" in
+-h | --help)
+    [[ $# -eq 1 ]] || die "--help does not accept additional arguments"
+    usage
+    ;;
+--restore)
+    [[ $# -eq 1 ]] || die "--restore does not accept additional arguments"
+    restore
+    ;;
+*)
+    [[ $# -eq 1 ]] || {
+        usage >&2
+        exit 1
+    }
+
+    branch="${1#"${remote}"/}"
+    target_branch="${remote}/${branch}"
+    start_review "$remote" "$target_branch" "$base_branch"
+    ;;
+esac

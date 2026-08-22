@@ -150,6 +150,8 @@ export MANPAGER='nvim +Man!'
 # HOMEBREW
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# CUSTOMIZE
+export PATH="$HOME/.config/dotfiles/bin:$PATH"
 
 # MASON
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
