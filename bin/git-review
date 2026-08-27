@@ -108,7 +108,10 @@ start_review() {
     stash_ref=""
 
     stash_before="$(git rev-parse --verify --quiet refs/stash || true)"
-    git stash push --include-untracked --message "git-review: automatic backup" >/dev/null
+    # Some callers (e.g. Vim Fugitive Async Call) enable literal pathspecs, which prevents stash
+    # from removing files. Add "--no-literal-pathspecs" to override that mode for this operation.
+    git --no-literal-pathspecs stash push --include-untracked --message \
+        "git-review: automatic backup" >/dev/null
     stash_ref="$(git rev-parse --verify --quiet refs/stash || true)"
     [[ "$stash_ref" != "$stash_before" ]] || stash_ref=""
 
