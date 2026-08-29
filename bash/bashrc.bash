@@ -161,15 +161,3 @@ PATH="$(echo -n "$PATH" | awk -v RS=: '!(a[$0]++) {printf("%s%s", sep, $0); sep=
 # Starship
 export STARSHIP_CONFIG="$HOME/.config/dotfiles/starship/starship.toml"
 eval "$(starship init bash)"
-
-# if [[ ! $TERM =~ screen  && ! $VIM ]]; then
-#     exec tmux
-# fi
-# if [ ! $VIM ]; then
-#     tmux attach &> /dev/null
-#     if [[ ! $TERM =~ screen  && ! $VIM ]]; then
-#         exec tmux
-#     fi
-# fi
-
-# vim:ft=sh
