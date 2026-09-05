@@ -33,7 +33,7 @@ fi
 
 # fzf
 ##################################################################################################
-# [ -r ~/.fzf.bash ] && source ~/.fzf.bash
+eval "$(fzf --bash)"
 _FZF_GIT_COMMAND='git ls-files --cached --others --exclude-standard'
 _FZF_RG_COMMAND="rg --files --color=never --hidden --glob '!.git/' --glob '!*.swp'"
 
