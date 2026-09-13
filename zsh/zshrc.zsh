@@ -252,6 +252,9 @@ _nvm_lazy_completion() {
 
 compdef _nvm_lazy_completion nvm
 
+# RUST
+export PATH="$(brew --prefix rustup)/bin:$PATH"
+
 # ALIAS
 alias ll="ls -alFG"
 alias vim="nvim"
