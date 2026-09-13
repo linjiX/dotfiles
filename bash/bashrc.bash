@@ -39,18 +39,6 @@ _FZF_RG_COMMAND="rg --files --color=never --hidden --glob '!.git/' --glob '!*.sw
 
 export FZF_CTRL_T_COMMAND="($_FZF_GIT_COMMAND || $_FZF_RG_COMMAND) 2> /dev/null"
 
-# setxkbmap
-##################################################################################################
-if [ "$_UNAME" != Darwin ] &&
-    command -v setxkbmap >/dev/null 2>&1 &&
-    [[ -n $DISPLAY ]] &&
-    [[ -z $SSH_CLIENT ]]; then
-    setxkbmap -option ""
-    # setxkbmap -option "ctrl:nocaps"
-    setxkbmap -option "caps:escape"
-    setxkbmap -option "shift:both_capslock"
-fi
-
 # bind
 ##################################################################################################
 if [ "$_UNAME" == Darwin ]; then
