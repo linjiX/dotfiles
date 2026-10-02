@@ -155,11 +155,17 @@ fi
 ##################################################################################################
 source ~/.config/dotfiles/bash/git.bash
 
+# git review
+##################################################################################################
+source ~/.config/dotfiles/git/git-review-completion.sh
+
 # PATH
 ##################################################################################################
 if [ "$_UNAME" == Darwin ]; then
     export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 fi
+export PATH="$HOME/.config/dotfiles/bin:$PATH"
+
 # Remove duplicate items in $PATH
 PATH="$(echo -n "$PATH" | awk -v RS=: '!(a[$0]++) {printf("%s%s", sep, $0); sep=RS}')"
 

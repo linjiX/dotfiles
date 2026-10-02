@@ -252,6 +252,9 @@ _nvm_lazy_completion() {
 
 compdef _nvm_lazy_completion nvm
 
+# GIT REVIEW
+source "$HOME/.config/dotfiles/git/git-review-completion.sh"
+
 # RUST
 export PATH="$(brew --prefix rustup)/bin:$PATH"
 

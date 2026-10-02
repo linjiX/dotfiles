@@ -125,6 +125,13 @@ start_review() {
     echo "When finished, run: git review --restore"
 }
 
+# Git's own commands print their options for these flags; shell completion
+# (`__gitcomp_builtin`) and Vim Fugitive's `:Git` completion both rely on them.
+if [[ "${1:-}" == --git-completion-helper || "${1:-}" == --git-completion-helper-all ]]; then
+    echo "--restore --help"
+    exit 0
+fi
+
 ensure_repository
 
 case "${1:-}" in
