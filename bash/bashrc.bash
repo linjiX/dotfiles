@@ -24,11 +24,28 @@ _UNAME=$(uname)
 ##################################################################################################
 if [ "$_UNAME" == Darwin ]; then
     export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+fi
 
-    # bash_completion
-    [ -r /usr/local/etc/profile.d/bash_completion.sh ] &&
-        source /usr/local/etc/profile.d/bash_completion.sh
-    # _expand() { :; }
+# Homebrew
+##################################################################################################
+# `brew shellenv` exports HOMEBREW_PREFIX, which the sections below rely on.
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# bash_completion
+##################################################################################################
+# Linux distributions load the system bash-completion from their default ~/.bashrc, so only
+# Homebrew's completions need to be loaded here.
+if [ -n "${HOMEBREW_PREFIX-}" ]; then
+    if [ -r "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh" ]; then
+        source "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh"
+    else
+        # Without the bash-completion package, load the completions that Homebrew formulae
+        # (git, gh, ...) install directly.
+        for _completion in "$HOMEBREW_PREFIX/etc/bash_completion.d/"*; do
+            [ -r "$_completion" ] && source "$_completion"
+        done
+        unset _completion
+    fi
 fi
 
 # fzf
