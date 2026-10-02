@@ -7,7 +7,7 @@ base_branch="${remote}/main"
 session_key="review.session"
 
 usage() {
-    cat f <<'EOF'
+    cat <<'EOF'
 Usage:
   git review <branch>
   git review --restore
@@ -128,15 +128,15 @@ start_review() {
 # Git's own commands print their options for these flags; shell completion
 # (`__gitcomp_builtin`) and Vim Fugitive's `:Git` completion both rely on them.
 if [[ "${1:-}" == --git-completion-helper || "${1:-}" == --git-completion-helper-all ]]; then
-    echo "--restore --help"
+    echo "--restore"
     exit 0
 fi
 
 ensure_repository
 
 case "${1:-}" in
--h | --help)
-    [[ $# -eq 1 ]] || die "--help does not accept additional arguments"
+-h)
+    [[ $# -eq 1 ]] || die "-h does not accept additional arguments"
     usage
     ;;
 --restore)
