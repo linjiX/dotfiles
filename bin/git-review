@@ -44,9 +44,29 @@ stash_selector() {
     done < <(git stash list --format='%H %gd')
 }
 
+# A session whose stash has left the stash list (e.g. a manual `git stash pop`, or an interrupted
+# restore) cannot be restored or switched safely. When HEAD is already back on the original branch,
+# the original working tree has been restored, so the session is simply cleared.
+clear_stale_session() {
+    local session original_branch original_head stash_ref
+    session="$(git config --local --get "$session_key" 2>/dev/null)" || return 0
+    IFS=: read -r original_branch original_head stash_ref <<<"$session"
+    [[ -n "$stash_ref" && -z "$(stash_selector "$stash_ref")" ]] || return 0
+
+    [[ -n "$original_branch" &&
+        "$(git symbolic-ref --quiet --short HEAD || true)" == "$original_branch" ]] ||
+        die "the saved stash ${stash_ref} is no longer in the stash list; recover it with" \
+            "'git stash apply ${stash_ref}' if needed, then run 'git config --unset ${session_key}'"
+
+    git config --local --unset-all "$session_key"
+    echo "git review: cleared a stale review session whose stash ${stash_ref} was already" \
+        "applied or dropped; run 'git stash apply ${stash_ref}' if its changes are missing" >&2
+}
+
 restore() {
     local session original_branch original_head stash_ref stash_selector
 
+    clear_stale_session
     session="$(git config --local --get "$session_key" 2>/dev/null)" ||
         die "no active review session"
     IFS=: read -r original_branch original_head stash_ref <<<"$session"
@@ -100,6 +120,7 @@ start_review() {
     target_branch="$2"
     review_base="$3"
 
+    clear_stale_session
     local session_active=""
     git config --local --get "$session_key" >/dev/null 2>&1 && session_active=1
 
