@@ -31,6 +31,18 @@ ensure_repository() {
     git rev-parse --show-toplevel >/dev/null || exit 1
 }
 
+# Prints the reflog selector (stash@{n}) of the stash whose object ID is $1, or nothing when it is
+# not in the stash list. `git stash drop` accepts a selector rather than an object ID.
+stash_selector() {
+    local hash selector
+    while read -r hash selector; do
+        if [[ "$hash" == "$1" ]]; then
+            printf '%s' "$selector"
+            return
+        fi
+    done < <(git stash list --format='%H %gd')
+}
+
 restore() {
     local session original_branch original_head stash_ref stash_selector
 
@@ -66,15 +78,9 @@ restore() {
         git stash apply --index "$stash_ref" || die \
             "could not reapply the saved changes; they remain available as ${stash_ref}"
 
-        # `git stash drop` accepts a reflog selector (stash@{0}), rather than an
-        # object ID. Look it up by the ID stored at the start of the session so a
-        # stash created during review is never removed accidentally.
-        stash_selector="$(git stash list --format='%H %gd' | while read -r hash selector; do
-            [[ "$hash" == "$stash_ref" ]] && {
-                printf '%s' "$selector"
-                break
-            }
-        done)"
+        # Look the stash up by the ID stored at the start of the session so a stash created
+        # during review is never removed accidentally.
+        stash_selector="$(stash_selector "$stash_ref")"
         if [[ -n "$stash_selector" ]]; then
             git stash drop "$stash_selector" >/dev/null ||
                 echo "git review: restored changes, but could not remove ${stash_selector}" >&2
