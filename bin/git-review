@@ -14,7 +14,8 @@ Usage:
 
 Starts a review by fetching origin, saving the current working tree in a stash,
 and exposing <branch>'s changes since its merge base with origin/main as
-unstaged changes.
+unstaged changes. Running it again during a review switches to the new <branch>
+directly, discarding the current review changes.
 
 Run `git review --restore` after reviewing to discard the review changes and
 restore the original branch, staged changes, unstaged changes, and untracked
@@ -99,29 +100,38 @@ start_review() {
     target_branch="$2"
     review_base="$3"
 
-    git config --local --get "$session_key" >/dev/null 2>&1 &&
-        die "a review session is already active; run 'git review --restore' first"
+    local session_active=""
+    git config --local --get "$session_key" >/dev/null 2>&1 && session_active=1
 
     git fetch "$remote"
 
+    # Resolve the new target before touching the working tree, so a bad branch name never
+    # discards the review in progress.
     local merge_base
     merge_base="$(git merge-base "$review_base" "$target_branch" 2>/dev/null)" ||
         die "could not find a merge base between ${target_branch} and ${review_base}"
 
-    local original_branch original_head stash_ref stash_before
-    original_branch="$(git symbolic-ref --quiet --short HEAD || true)"
-    original_head="$(git rev-parse HEAD)"
-    stash_ref=""
+    if [[ -n "$session_active" ]]; then
+        # Switching reviews: keep the saved session for `--restore`, and only discard the
+        # tracked changes of the current review, like `restore` does.
+        git reset --hard
+    else
+        local original_branch original_head stash_ref stash_before
+        original_branch="$(git symbolic-ref --quiet --short HEAD || true)"
+        original_head="$(git rev-parse HEAD)"
+        stash_ref=""
 
-    stash_before="$(git rev-parse --verify --quiet refs/stash || true)"
-    # Some callers (e.g. Vim Fugitive Async Call) enable literal pathspecs, which prevents stash
-    # from removing files. Add "--no-literal-pathspecs" to override that mode for this operation.
-    git --no-literal-pathspecs stash push --include-untracked --message \
-        "git-review: automatic backup" >/dev/null
-    stash_ref="$(git rev-parse --verify --quiet refs/stash || true)"
-    [[ "$stash_ref" != "$stash_before" ]] || stash_ref=""
+        stash_before="$(git rev-parse --verify --quiet refs/stash || true)"
+        # Some callers (e.g. Vim Fugitive Async Call) enable literal pathspecs, which prevents
+        # stash from removing files. Add "--no-literal-pathspecs" to override that mode for this
+        # operation.
+        git --no-literal-pathspecs stash push --include-untracked --message \
+            "git-review: automatic backup" >/dev/null
+        stash_ref="$(git rev-parse --verify --quiet refs/stash || true)"
+        [[ "$stash_ref" != "$stash_before" ]] || stash_ref=""
 
-    git config --local "$session_key" "${original_branch}:${original_head}:${stash_ref}"
+        git config --local "$session_key" "${original_branch}:${original_head}:${stash_ref}"
+    fi
 
     git switch --detach "$target_branch"
     git reset --mixed --intent-to-add "$merge_base"
