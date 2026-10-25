@@ -4,7 +4,16 @@ set -euo pipefail
 
 remote="origin"
 base_branch="${remote}/main"
-session_key="review.session"
+
+# Review state lives in refs, so `git for-each-ref refs/review` shows all of it:
+# - the current branch `review/<branch>` marks the review and shows it in shell prompts
+# - `refs/review/original` points at the original branch (symbolic) or commit (detached HEAD)
+# - `refs/review/backup` holds the saved working tree; it is kept out of the stash list, so a
+#   manual `git stash pop` or `git stash drop` can never consume it
+review_prefix="review/"
+original_ref="refs/review/original"
+backup_ref="refs/review/backup"
+legacy_session_key="review.session"
 
 usage() {
     cat <<'EOF'
@@ -12,14 +21,15 @@ Usage:
   git review <branch>
   git review --restore
 
-Starts a review by fetching origin, saving the current working tree in a stash,
-and exposing <branch>'s changes since its merge base with origin/main as
-unstaged changes. Running it again during a review switches to the new <branch>
-directly, discarding the current review changes.
+Starts a review by fetching origin, saving the current working tree, and checking
+out a local `review/<branch>` branch that exposes <branch>'s changes since its
+merge base with origin/main as unstaged changes. Running it again during a review
+switches to the new <branch> directly, discarding the current review changes.
 
-Run `git review --restore` after reviewing to discard the review changes and
-restore the original branch, staged changes, unstaged changes, and untracked
-files. Ignored files are preserved throughout the review.
+Run `git review --restore` after reviewing to discard the review changes, delete
+the review branch, and restore the original branch, staged changes, unstaged
+changes, and untracked files. Ignored files are left in place, unless the reviewed
+branch tracks the same paths.
 EOF
 }
 
@@ -32,57 +42,48 @@ ensure_repository() {
     git rev-parse --show-toplevel >/dev/null || exit 1
 }
 
-# Prints the reflog selector (stash@{n}) of the stash whose object ID is $1, or nothing when it is
-# not in the stash list. `git stash drop` accepts a selector rather than an object ID.
-stash_selector() {
-    local hash selector
-    while read -r hash selector; do
-        if [[ "$hash" == "$1" ]]; then
-            printf '%s' "$selector"
-            return
-        fi
-    done < <(git stash list --format='%H %gd')
+# Sessions of older versions were stored in git config, with the backup in the stash list.
+check_legacy_session() {
+    git config --local --get "$legacy_session_key" >/dev/null 2>&1 || return 0
+    die "found a review session of an older git-review in '${legacy_session_key}'; check" \
+        "'git stash list' for its 'git-review: automatic backup', then run" \
+        "'git config --unset ${legacy_session_key}'"
 }
 
-# A session whose stash has left the stash list (e.g. a manual `git stash pop`, or an interrupted
-# restore) cannot be restored or switched safely. When HEAD is already back on the original branch,
-# the original working tree has been restored, so the session is simply cleared.
-clear_stale_session() {
-    local session original_branch original_head stash_ref
-    session="$(git config --local --get "$session_key" 2>/dev/null)" || return 0
-    IFS=: read -r original_branch original_head stash_ref <<<"$session"
-    [[ -n "$stash_ref" && -z "$(stash_selector "$stash_ref")" ]] || return 0
+session_active() {
+    git rev-parse --verify --quiet "$original_ref" >/dev/null ||
+        git symbolic-ref --quiet "$original_ref" >/dev/null
+}
 
-    [[ -n "$original_branch" &&
-        "$(git symbolic-ref --quiet --short HEAD || true)" == "$original_branch" ]] ||
-        die "the saved stash ${stash_ref} is no longer in the stash list; recover it with" \
-            "'git stash apply ${stash_ref}' if needed, then run 'git config --unset ${session_key}'"
+# Prints the current review branch, or fails when HEAD is not on one.
+current_review_branch() {
+    local branch
+    branch="$(git symbolic-ref --quiet --short HEAD)" || return 1
+    [[ "$branch" == "$review_prefix"* ]] || return 1
+    printf '%s' "$branch"
+}
 
-    git config --local --unset-all "$session_key"
-    echo "git review: cleared a stale review session whose stash ${stash_ref} was already" \
-        "applied or dropped; run 'git stash apply ${stash_ref}' if its changes are missing" >&2
+# `--no-deref` matters: without it, deleting the symbolic ref would delete the original branch.
+clear_session() {
+    git update-ref --no-deref -d "$original_ref"
 }
 
 restore() {
-    local session original_branch original_head stash_ref stash_selector
+    local review_branch original_branch=""
 
-    clear_stale_session
-    session="$(git config --local --get "$session_key" 2>/dev/null)" ||
-        die "no active review session"
-    IFS=: read -r original_branch original_head stash_ref <<<"$session"
+    check_legacy_session
+    session_active || die "no active review session"
+    review_branch="$(current_review_branch)" ||
+        die "HEAD is not on a '${review_prefix}*' branch; switch back to the review branch first"
 
     # Verify everything needed for recovery before discarding the review state.
-    if [[ -n "$original_branch" ]]; then
+    if original_branch="$(git symbolic-ref --quiet --short "$original_ref")"; then
         git show-ref --verify --quiet "refs/heads/${original_branch}" ||
             die "original branch no longer exists: ${original_branch}"
     else
-        git rev-parse --verify --quiet "${original_head}^{commit}" >/dev/null ||
-            die "original commit is no longer available: ${original_head}"
-    fi
-
-    if [[ -n "$stash_ref" ]]; then
-        git rev-parse --verify --quiet "${stash_ref}^{commit}" >/dev/null ||
-            die "saved working tree is no longer available: ${stash_ref}"
+        original_branch=""
+        git rev-parse --verify --quiet "${original_ref}^{commit}" >/dev/null ||
+            die "original commit is no longer available"
     fi
 
     # Review state is deliberately dirty after reset. Discard its tracked
@@ -92,37 +93,50 @@ restore() {
     if [[ -n "$original_branch" ]]; then
         git switch "$original_branch"
     else
-        git switch --detach "$original_head"
+        git switch --detach "$original_ref"
     fi
 
-    if [[ -n "$stash_ref" ]]; then
-        git stash apply --index "$stash_ref" || die \
-            "could not reapply the saved changes; they remain available as ${stash_ref}"
+    git branch -D "$review_branch" >/dev/null
+    clear_session
 
-        # Look the stash up by the ID stored at the start of the session so a stash created
-        # during review is never removed accidentally.
-        stash_selector="$(stash_selector "$stash_ref")"
-        if [[ -n "$stash_selector" ]]; then
-            git stash drop "$stash_selector" >/dev/null ||
-                echo "git review: restored changes, but could not remove ${stash_selector}" >&2
-        else
-            echo "git review: restored changes; temporary stash ${stash_ref} was already removed" >&2
-        fi
+    if git rev-parse --verify --quiet "$backup_ref" >/dev/null; then
+        git stash apply --index "$backup_ref" ||
+            die "could not reapply the saved changes; resolve them, run" \
+                "'git stash apply --index ${backup_ref}' if needed, then" \
+                "'git update-ref -d ${backup_ref}'"
+        git update-ref -d "$backup_ref"
     fi
 
-    git config --local --unset-all "$session_key" 2>/dev/null || true
     echo "Original working tree restored."
 }
 
 start_review() {
-    local remote target_branch review_base
+    local remote branch target_branch review_base review_branch
     remote="$1"
-    target_branch="$2"
+    branch="$2"
+    target_branch="${remote}/${branch}"
     review_base="$3"
+    review_branch="${review_prefix}${branch}"
 
-    clear_stale_session
-    local session_active=""
-    git config --local --get "$session_key" >/dev/null 2>&1 && session_active=1
+    check_legacy_session
+    local current_branch=""
+    if session_active; then
+        current_branch="$(current_review_branch)" ||
+            die "a review session is active, but HEAD is not on a '${review_prefix}*' branch;" \
+                "switch back to it and run 'git review --restore', or, if it is gone, run" \
+                "'git update-ref --no-deref -d ${original_ref}' and apply ${backup_ref} manually"
+    elif git rev-parse --verify --quiet "$backup_ref" >/dev/null; then
+        die "a saved working tree is still in ${backup_ref}; apply it with" \
+            "'git stash apply --index ${backup_ref}', then run 'git update-ref -d ${backup_ref}'"
+    fi
+
+    git check-ref-format --branch "$review_branch" >/dev/null ||
+        die "invalid branch name: ${review_branch}"
+
+    if [[ "$review_branch" != "$current_branch" ]] &&
+        git show-ref --verify --quiet "refs/heads/${review_branch}"; then
+        die "branch ${review_branch} already exists"
+    fi
 
     git fetch "$remote"
 
@@ -132,32 +146,69 @@ start_review() {
     merge_base="$(git merge-base "$review_base" "$target_branch" 2>/dev/null)" ||
         die "could not find a merge base between ${target_branch} and ${review_base}"
 
-    if [[ -n "$session_active" ]]; then
+    if [[ -n "$current_branch" ]]; then
         # Switching reviews: keep the saved session for `--restore`, and only discard the
-        # tracked changes of the current review, like `restore` does.
-        git reset --hard
+        # tracked changes of the current review, like `restore` does. Create the new branch
+        # first, for the same reason as below.
+        if [[ "$review_branch" == "$current_branch" ]]; then
+            git reset --hard
+            git reset --hard "$target_branch"
+        else
+            git branch --no-track "$review_branch" "$target_branch"
+            git reset --hard
+            git switch "$review_branch"
+            git branch -D "$current_branch" >/dev/null
+        fi
     else
-        local original_branch original_head stash_ref stash_before
-        original_branch="$(git symbolic-ref --quiet --short HEAD || true)"
-        original_head="$(git rev-parse HEAD)"
-        stash_ref=""
+        # Create the review branch before touching the working tree: `git switch --create` updates
+        # the files before it creates the branch, so a ref error (e.g. a local `review` branch
+        # blocks `review/<branch>`) would fail halfway, after the working tree was saved.
+        git branch --no-track "$review_branch" "$target_branch"
 
+        local stash_before stash_after original_branch
         stash_before="$(git rev-parse --verify --quiet refs/stash || true)"
         # Some callers (e.g. Vim Fugitive Async Call) enable literal pathspecs, which prevents
         # stash from removing files. Add "--no-literal-pathspecs" to override that mode for this
         # operation.
         git --no-literal-pathspecs stash push --include-untracked --message \
-            "git-review: automatic backup" >/dev/null
-        stash_ref="$(git rev-parse --verify --quiet refs/stash || true)"
-        [[ "$stash_ref" != "$stash_before" ]] || stash_ref=""
+            "git-review: automatic backup" >/dev/null || {
+            git branch -D "$review_branch" >/dev/null
+            exit 1
+        }
+        stash_after="$(git rev-parse --verify --quiet refs/stash || true)"
+        if [[ "$stash_after" != "$stash_before" ]]; then
+            # Move the new stash entry out of the stash list into its own ref.
+            git update-ref "$backup_ref" "$stash_after"
+            git stash drop --quiet "stash@{0}"
+        fi
 
-        git config --local "$session_key" "${original_branch}:${original_head}:${stash_ref}"
+        if original_branch="$(git symbolic-ref --quiet HEAD)"; then
+            git symbolic-ref "$original_ref" "$original_branch"
+        else
+            git update-ref "$original_ref" HEAD
+        fi
+
+        # Without the review branch checked out, neither `--restore` nor a new review could pick
+        # up the session, so undo it. The working tree is clean here, and a failed switch to an
+        # existing branch leaves it untouched.
+        if ! git switch "$review_branch"; then
+            clear_session
+            git branch -D "$review_branch" >/dev/null
+            if git rev-parse --verify --quiet "$backup_ref" >/dev/null; then
+                git stash apply --index "$backup_ref" ||
+                    die "could not switch to ${review_branch}, nor reapply the saved changes;" \
+                        "resolve them, run 'git stash apply --index ${backup_ref}' if needed," \
+                        "then 'git update-ref -d ${backup_ref}'"
+                git update-ref -d "$backup_ref"
+            fi
+            die "could not switch to ${review_branch}; the original working tree is restored"
+        fi
     fi
 
-    git switch --detach "$target_branch"
     git reset --mixed --intent-to-add "$merge_base"
 
-    echo "Review ready: ${target_branch} against the merge base with ${review_base}"
+    echo "Review ready: ${target_branch} on ${review_branch}, against the merge base with" \
+        "${review_base}"
     echo "Use 'git diff' or open the repository in your editor."
     echo "When finished, run: git review --restore"
 }
@@ -186,8 +237,6 @@ case "${1:-}" in
         exit 1
     }
 
-    branch="${1#"${remote}"/}"
-    target_branch="${remote}/${branch}"
-    start_review "$remote" "$target_branch" "$base_branch"
+    start_review "$remote" "${1#"${remote}"/}" "$base_branch"
     ;;
 esac
