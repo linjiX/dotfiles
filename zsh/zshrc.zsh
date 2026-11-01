@@ -18,6 +18,10 @@ fi
 
 typeset -U path PATH
 
+# DOTFILES
+# %x is the file being sourced, so this resolves to the repository root.
+export DOTFILES="${${(%):-%x}:A:h:h}"
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -151,7 +155,7 @@ export MANPAGER='nvim +Man!'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # CUSTOMIZE
-export PATH="$HOME/.config/dotfiles/bin:$PATH"
+export PATH="$DOTFILES/bin:$PATH"
 
 # MASON
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
@@ -253,7 +257,7 @@ _nvm_lazy_completion() {
 compdef _nvm_lazy_completion nvm
 
 # GIT REVIEW
-source "$HOME/.config/dotfiles/git/git-review-completion.sh"
+source "$DOTFILES/git/git-review-completion.sh"
 
 # RUST
 export PATH="$(brew --prefix rustup)/bin:$PATH"
@@ -266,7 +270,7 @@ alias nvi="nvim"
 alias t="tmux"
 
 alias c="cd ~/.config/"
-alias d="cd ~/.config/dotfiles/"
+alias d='cd "$DOTFILES"'
 alias v="cd ~/.config/nvim/"
 alias w="cd ~/diffus/"
 alias g="cd ~/diffus/github/"
@@ -277,4 +281,4 @@ alias root='cd $(git rev-parse --show-toplevel)'
 
 # Powerlevel10k
 # To customize prompt, run `p10k configure` or edit zsh/p10k.zsh in this repository.
-[[ ! -f "$HOME/.config/dotfiles/zsh/p10k.zsh" ]] || source "$HOME/.config/dotfiles/zsh/p10k.zsh"
+[[ ! -f "$DOTFILES/zsh/p10k.zsh" ]] || source "$DOTFILES/zsh/p10k.zsh"

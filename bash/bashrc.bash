@@ -13,6 +13,9 @@
 # shellcheck source=/dev/null
 true
 
+DOTFILES="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
+export DOTFILES
+
 export HISTCONTROL=ignoreboth
 export HISTSIZE=10000
 export VISUAL=nvim
@@ -87,7 +90,7 @@ alias nvi='nvim'
 alias t='tmux'
 
 alias c='cd ~/.config/'
-alias d='cd ~/.config/dotfiles/'
+alias d='cd "$DOTFILES"'
 alias v='cd ~/.config/nvim/'
 alias w='cd ~/workspace/'
 alias g='cd ~/workspace/github/'
@@ -153,22 +156,22 @@ fi
 
 # git
 ##################################################################################################
-source ~/.config/dotfiles/bash/git.bash
+source "$DOTFILES/bash/git.bash"
 
 # git review
 ##################################################################################################
-source ~/.config/dotfiles/git/git-review-completion.sh
+source "$DOTFILES/git/git-review-completion.sh"
 
 # PATH
 ##################################################################################################
 if [ "$_UNAME" == Darwin ]; then
     export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 fi
-export PATH="$HOME/.config/dotfiles/bin:$PATH"
+export PATH="$DOTFILES/bin:$PATH"
 
 # Remove duplicate items in $PATH
 PATH="$(echo -n "$PATH" | awk -v RS=: '!(a[$0]++) {printf("%s%s", sep, $0); sep=RS}')"
 
 # Starship
-export STARSHIP_CONFIG="$HOME/.config/dotfiles/starship/starship.toml"
+export STARSHIP_CONFIG="$DOTFILES/starship/starship.toml"
 eval "$(starship init bash)"

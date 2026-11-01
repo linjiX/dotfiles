@@ -24,13 +24,13 @@ append_source_once() {
 }
 
 # bash config
-append_source_once ~/.bashrc 'source ~/.config/dotfiles/bash/bashrc.bash'
+append_source_once ~/.bashrc "source $DOTFILES/bash/bashrc.bash"
 if [ "$(uname)" == Darwin ]; then
     append_source_once ~/.bash_profile '[ -r ~/.bashrc ] && source ~/.bashrc'
 fi
 
 # zsh config
-append_source_once ~/.zshrc 'source ~/.config/dotfiles/zsh/zshrc.zsh'
+append_source_once ~/.zshrc "source $DOTFILES/zsh/zshrc.zsh"
 if [ ! -d ~/.oh-my-zsh ]; then
     git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
 fi
@@ -40,12 +40,12 @@ if [ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]; then
 fi
 
 # git config
-ln -sf ~/.config/dotfiles/git/gitconfig ~/.gitconfig
+ln -sf "$DOTFILES/git/gitconfig" ~/.gitconfig
 
 # tmux config
 git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 git clone --depth=1 https://github.com/tmux-plugins/tmux-cpu ~/.tmux/plugins/tmux-cpu
-ln -sf ~/.config/dotfiles/tmux/tmux.conf ~/.tmux.conf
+ln -sf "$DOTFILES/tmux/tmux.conf" ~/.tmux.conf
 
 # iterm2 Specify the preferences directory
 if [ "$(uname)" == Darwin ]; then
